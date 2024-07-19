@@ -1,0 +1,178 @@
+html {
+	width: 100%;
+	height: 100%;
+	/* box-sizing: border-box; */
+	font-display: fallback;
+	background: #333;
+	color: #fff;
+	scrollbar-gutter: stable;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	font-family: 'Roboto', sans-serif;
+	font-display: fallback;
+	background: #333;
+	color: #fff;
+}
+
+* {
+	box-sizing: inherit;
+}
+
+h1 {
+	/* font-size: 4vw; */
+	font-weight: bold;
+	margin-bottom: 0px;
+}
+
+code {
+	font-family: 'Roboto Mono', Courier, monospace;
+	color: #A30038;
+	background-color: #F8F8F8;
+	border: 1px solid #DDD;
+	border-radius: 2px;
+	padding: 0 6px;
+	font-weight: 500;
+}
+
+.link {
+	color: yellow !important;
+	text-decoration: yellow underline !important;
+}
+
+.link:hover {
+	background-color: yellow !important;
+	color: #424242 !important;
+}
+
+.chill-link {
+	color: #b9b9b9 !important;
+}
+
+.chill-link:hover {
+	color: #aaaaaa !important;
+}
+
+.page-content-container {
+	height: 100%;
+	padding-left: 4vw;
+	padding-right: 4vw;
+	padding-top: 100px;
+}
+
+.landing-container {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	position: relative;
+}
+
+.intro {
+	color: #fff;
+	padding: 4vw 4vw 0vw 0vw;
+	text-align: left;
+	display: inline-block;
+}
+
+.portfolio-container {
+	height: auto;
+	padding-bottom: 50px;
+}
+
+.portfolio-container a:hover {
+    text-decoration: none !important;
+}
+
+.portfolio-container .jumbotron {
+	display: block;
+	margin-top: 0px;
+	padding: 1rem;
+	margin-bottom: 40px;
+	position: relative;
+	background-color: #222222;
+	color: white !important;
+	z-index: 0;
+	overflow: hidden;
+}
+
+.portfolio-container .jumbotron:hover {
+	cursor: pointer;
+	transition: all 1s linear;
+	box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+	outline: 1px solid yellow;
+	text-decoration: none !important;
+	background-color: #272727;
+}
+
+.portfolio-container .jumbotron .display-5 {
+	text-decoration: underline;
+	padding-bottom: 30px;
+}
+
+.portfolio-container .jumbotron .footer {
+	margin-bottom: 0px;
+}
+
+.blog-container {
+	height: 100%;
+}
+
+.blog-content {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 650px;
+	font-size: 105%;
+	line-height: 1.9;
+}
+
+.blog-title {
+	margin-bottom: 35px;
+	border-bottom: thick solid yellow;
+}
+
+.blog-meta {
+	font-size: 90%;
+	margin-bottom: 20px;
+	color: gainsboro;
+}
+
+.blog-body {
+	font-size: 105%;
+	line-height: 1.9;
+}
+
+.blog-body.code {
+	line-height: 1.6;
+	font-size: 110%;
+}
+
+.resources-container {
+	height: 100%;
+}
+
+.contact-container {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+}
+
+
+/* @media screen and (max-width: 768px) {
+
+	h1 {
+		font-size: 100%;
+	}
+	h2 {
+		font-size: 100%;
+	}
+	h3 {
+		font-size: 100%;
+	}
+} */
