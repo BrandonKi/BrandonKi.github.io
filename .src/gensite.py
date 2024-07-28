@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime
 import os
 
-import htmlmin # Being lazy for right now
+import htmlmin  # Being lazy for right now
 
 MINIFY = True
 
@@ -76,7 +76,7 @@ def convert2html(filename: str) -> None:
 
     in_bulleted_list = False
     in_numbered_list = False
-    
+
     in_code_block = False
 
     tags = {'p': False, 'em': False, 'code': False, 'pre': False, 'ul': False, 'li': False, 'ol': False}
@@ -100,7 +100,10 @@ def convert2html(filename: str) -> None:
             elif line.count("-") > 1:   # date
                 meta[key] = datetime.strptime(line[line.find(":")+1:].strip(), '%Y-%m-%d')
             else:                       # number
-                meta[key] = int(line[line.find(":")+1:])
+                try:
+                    meta[key] = int(line[line.find(":")+1:])
+                except:                 # HACK
+                    meta[key] = line[line.find(":")+1:]
         elif len(line.strip()) == 0:
             output += '\n'
         elif line.startswith('```'):
@@ -108,6 +111,10 @@ def convert2html(filename: str) -> None:
             output += f'<{'/' if tags[t] else ''}{t}>'
             tags[t] = not tags[t]
             t = 'code'
+            # language = line[line.find('```')+3:].strip()
+            # if len(language) > 0:
+            #     language = f'class="language-{language}"'
+            # output += f'<{'/' if tags[t] else ''}{t}{language if not tags[t] else ''}>'
             output += f'<{'/' if tags[t] else ''}{t}>'
             tags[t] = not tags[t]
             in_code_block = not in_code_block
@@ -134,8 +141,6 @@ def convert2html(filename: str) -> None:
                 output += f'<{'/' if tags[t] else ''}{t} id="footnote{num}">'
                 tags[t] = not tags[t]
                 line = line[line.find(']:')+2:].lstrip()
-
-                
             else:
                 if in_bulleted_list:
                     if len(line.strip()) == 0:
@@ -182,7 +187,7 @@ def convert2html(filename: str) -> None:
                     unconsumed_bang = False
                 elif unconsumed_bang:
                     unconsumed_bang = False
-                    output += '!'
+                    output += '!' + c
                 elif c == '[':    # TODO, footnotes [^1]: some text
                     in_link = True
                 elif c == ']':
@@ -235,13 +240,14 @@ def convert2html(filename: str) -> None:
                 else:
                     output += c
                 unconsumed_link = False
-    
-    meta_prefix = f'<div class="blog-content"><header><h2 class="blog-title">{meta['title']}</h2></header><p class="blog-meta">{meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body"></div>'
+
+    meta_prefix = f'<div class="blog-content"><header><h2 class="blog-title">{meta['title']}</h2></header><p class="blog-meta">{
+        meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body"></div>'
     meta_suffix = '</div>'
 
     file.close()
     return meta_prefix + output + meta_suffix
-    
+
 
 if __name__ == '__main__':
     main()
