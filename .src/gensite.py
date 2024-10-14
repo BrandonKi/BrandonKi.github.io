@@ -163,13 +163,14 @@ def convert2html(filename: str) -> None:
                 continue
             elif first_char == '#':
                 cnt = line.count('#')
-                output += f'<h{cnt}>'
+                output += f'<h{cnt} class="blog-header">'
                 tags[f'h{cnt}'] = True
                 line = line[cnt:].lstrip()
             elif first_char not in ('`', '!'):
                 output += '<p>'
                 tags['p'] = True
             
+            backslash = False
             unconsumed_sup = False
             unconsumed_bang = False
             unconsumed_link = False
@@ -179,7 +180,12 @@ def convert2html(filename: str) -> None:
             saved_href = ""
             in_image = False
             for c in line:
-                if in_link and c == '^':
+                if c == '\\':
+                    backslash = True
+                elif backslash:
+                    backslash = False
+                    output += c
+                elif in_link and c == '^':
                     unconsumed_sup = True
                 elif c == '[' and unconsumed_bang:
                     in_image = True
@@ -207,7 +213,7 @@ def convert2html(filename: str) -> None:
                 elif in_image and in_href and c == ')':
                     in_image = False
                     in_href = False
-                    output += f'<figure><img src="{saved_href}"><figcaption>{saved_link}</figcaption></figure>'
+                    output += f'<figure><img width="650px" src="{saved_href}"><figcaption>{saved_link}</figcaption></figure>'
                     saved_link = ""
                     saved_href = ""
                 elif in_href and c == ')':
