@@ -7,6 +7,8 @@ import htmlmin  # Being lazy for right now
 
 MINIFY = True
 
+articles = []
+
 # Usage:
 #   py gensite.py path/to/input/mds path/to/output/htmls
 #   py gensite.py . ..
@@ -29,16 +31,22 @@ def main():
     css_out_directory.mkdir(exist_ok=True)
 
     template = open(in_directory / 'templates' / 'template.html').read()
+    
+    global articles
 
     # Convert blog markdown to html
     md_files = (in_directory / 'blog').glob('*.md')
     for file in md_files:
         output = convert2html(file)
+        articles[-1]['filename'] = file.stem
         with open(Path(out_directory / 'blog' / file.stem).with_suffix('.html'), "w") as outfile:
             # if MINIFY: output = m.minify(output)
             if MINIFY: output = m.minify(template.replace('{{Content}}', output))
             else: output = template.replace('{{Content}}', output)
             outfile.write(output)
+    
+    articles = sorted(articles, key=lambda x: x['date'], reverse=True)
+    articles.insert(1, None)
 
     # Main html
     html_files = in_directory.glob('*.html')
@@ -48,7 +56,19 @@ def main():
                 if file.stem == 'index':
                     output = output.read()
                 else:
-                    output = template.replace('{{Content}}', output.read())
+                    result = output.read()
+                    if file.stem == 'blog':
+                        for a in articles:
+                            if a is None:
+                                result += '<h3 style="margin-top:4rem;">Work In Progress</h3>'
+                            else:
+                                tags = ''
+                                for t in a['tags']:
+                                    tags += f'&nbsp<div class="blog-tag">&nbsp{t}&nbsp</div>&nbsp'
+                                result += f'<div>{a['date'].strftime("%b %d, %Y")} &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div>'
+                        result += '</div></div>'
+
+                    output = template.replace('{{Content}}', result)
                 if MINIFY: output = m.minify(output)
                 outfile.write(output)
 
@@ -78,6 +98,7 @@ def convert2html(filename: str) -> None:
     in_numbered_list = False
 
     in_code_block = False
+    backref = None
 
     tags = {'p': False, 'em': False, 'code': False, 'pre': False, 'ul': False, 'li': False, 'ol': False}
 
@@ -141,6 +162,7 @@ def convert2html(filename: str) -> None:
                 output += f'<{'/' if tags[t] else ''}{t} id="footnote{num}">'
                 tags[t] = not tags[t]
                 line = line[line.find(']:')+2:].lstrip()
+                backref = f'{num}'
             else:
                 if in_bulleted_list:
                     if len(line.strip()) == 0:
@@ -206,7 +228,7 @@ def convert2html(filename: str) -> None:
                 elif unconsumed_link and c == '(':
                     in_href = True
                 elif unconsumed_link and unconsumed_sup:
-                    output += f'<sup><a class="link" href="#footnote{saved_link}">{saved_link}</a></sup>'
+                    output += f'<sup><a class="link" id="backref{saved_link}" href="#footnote{saved_link}">{saved_link}</a></sup>'
                     unconsumed_link = False
                     unconsumed_sup = False
                     saved_link = ""
@@ -235,6 +257,9 @@ def convert2html(filename: str) -> None:
                     output += f'<{'/' if tags[t] else ''}{t}{'' if tags[t] else ' class="hljs"'}>'
                     tags[t] = not tags[t]
                 elif c == '\n': # HACK
+                    if backref is not None:
+                        output += f'&nbsp<a class="link" href="#backref{backref}">&#x21A9;</a>'
+                        backref = None
                     for k, v in tags.items():
                         if v and k in ('p', 'h1', 'h2', 'h3', 'h4', 'li'):
                             output += f'<{'/' if tags[k] else ''}{k}>'
@@ -247,9 +272,15 @@ def convert2html(filename: str) -> None:
                     output += c
                 unconsumed_link = False
 
+    if backref is not None:
+        output += f'&nbsp<a class="link" href="#backref{backref}">&#x21A9;</a>'
+        backref = None
+
     meta_prefix = f'<div class="blog-content"><header><h2 class="blog-title">{meta['title']}</h2></header><p class="blog-meta">{
         meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body"></div>'
     meta_suffix = '</div>'
+
+    articles.append(meta)
 
     file.close()
     return meta_prefix + output + meta_suffix

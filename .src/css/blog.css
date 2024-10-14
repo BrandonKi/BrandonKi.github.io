@@ -11,6 +11,14 @@
 	margin-bottom: 1rem;
 }
 
+.blog-tag {
+	display: inline-block;
+	border-radius: 4px;
+	background-color: gray;
+	font-size: 80%;
+}
+
+
 figcaption {
 	text-align: center;
 	color: lightgray;
