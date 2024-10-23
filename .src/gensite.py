@@ -86,6 +86,7 @@ def main():
 def convert2html(filename: str) -> None:
     output = """
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/gruvbox-dark-soft.min.css">
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 """
@@ -203,7 +204,10 @@ def convert2html(filename: str) -> None:
             in_image = False
             for c in line:
                 if c == '\\':
-                    backslash = True
+                    if backslash:
+                        output += '\\'
+                    else:
+                        backslash = True
                 elif backslash:
                     backslash = False
                     output += c
