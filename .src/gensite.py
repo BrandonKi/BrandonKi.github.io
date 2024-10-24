@@ -6,6 +6,7 @@ import os
 import htmlmin  # Being lazy for right now
 
 MINIFY = True
+# MINIFY = False
 
 articles = []
 
@@ -16,6 +17,7 @@ def main():
     if len(sys.argv) < 3:
         print('You forgot to tell me what directories to look at!!')
         print('Usage:\n\tpy gensite.py path/to/input/mds path/to/output/htmls')
+        print('\t(usually you want to run this: py gensite.py . ..)')
         sys.exit(-1)
 
     if MINIFY:
@@ -84,11 +86,27 @@ def main():
 # This is not a compliant markdown parser however.
 # It only accepts a nonstandard subset of markdown useful for making this website.
 def convert2html(filename: str) -> None:
+# <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     output = """
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/gruvbox-dark-soft.min.css">
-<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\\\(', right: '\\\\)', display: false},
+              {left: '\\\\[', right: '\\\\]', display: true}
+          ],
+          throwOnError : false
+        });
+    });
+</script>
 """
 
     in_meta = False
