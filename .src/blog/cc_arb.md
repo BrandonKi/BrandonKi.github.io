@@ -30,7 +30,7 @@ First of all, the most important part, is to pick where to put this \\($25\\)k. 
 
 In this case, my appetite for risk is extremely low, especially since there are some solid risk-free investment options available. I've decided to go with [3 Month Treasury Bills](https://www.investopedia.com/terms/t/treasurybill.asp).[^1]
 
-To somplifiy calcuations, I'll be assuming a flat %5.1 annual return over 15 months(April 2023 to July 2024). Realistically, it's slightly higher, but it won't signifcantly affect the outcome.
+To simplifiy calcuations, I'll be assuming a flat \\(5.1\\%\\) annual return over 15 months(April 2023 to July 2024). Realistically, it's slightly higher, but it won't signifcantly affect the outcome.
 
 ![3 Month T Bill Rate](TBillRate.png)
 

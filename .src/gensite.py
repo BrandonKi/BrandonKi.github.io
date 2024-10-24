@@ -280,7 +280,7 @@ def convert2html(filename: str) -> None:
         output += f'&nbsp<a class="link" href="#backref{backref}">&#x21A9;</a>'
         backref = None
 
-    meta_prefix = f'<div class="blog-content"><header><h2 class="blog-title">{meta['title']}</h2></header><p class="blog-meta">{
+    meta_prefix = f'<div class="blog-content"><header><h1 class="blog-title">{meta['title']}</h1></header><p class="blog-meta">{
         meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body"></div>'
     meta_suffix = '</div>'
 
