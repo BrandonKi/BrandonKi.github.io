@@ -113,7 +113,7 @@ I finally decided to start working on semantic analysis and type checking. This 
 
 Also, C has a concept of [constant expressions](https://en.cppreference.com/w/c/language/constant_expression) which I am leaving for later but it will be handled during semantic analysis.
 
-The other major features I added were `sizeof` and `_Alignof`. These were pretty easy to add, but `sizeof` expressions are pretty odd especially because of the optional `()`.
+The other major features I added were `sizeof` and `\_Alignof`. These were pretty easy to add, but `sizeof` expressions are pretty odd especially because of the optional `()`.
 
 As per usual here's an example with some of the new stuff.
 

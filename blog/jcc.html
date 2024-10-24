@@ -35,7 +35,7 @@ int main() {
 
     return a; // returns 15
 }
-</pre></code><h2 class=blog-header>Commits 12-13</h2><p>I finally decided to start working on semantic analysis and type checking. This meant I had to actually make pointers work correctly instead of the hacks I was doing before.</p><p>Also, C has a concept of <a class=link href=https://en.cppreference.com/w/c/language/constant_expression>constant expressions</a> which I am leaving for later but it will be handled during semantic analysis.</p><p>The other major features I added were <code class=hljs>sizeof</code> and <code class=hljs><em>Alignof</code>. These were pretty easy to add, but <code class=hljs>sizeof</code> expressions are pretty odd especially because of the optional <code class=hljs>()</code>.</p><p>As per usual here's an example with some of the new stuff.</p><pre><code>int main() {
+</pre></code><h2 class=blog-header>Commits 12-13</h2><p>I finally decided to start working on semantic analysis and type checking. This meant I had to actually make pointers work correctly instead of the hacks I was doing before.</p><p>Also, C has a concept of <a class=link href=https://en.cppreference.com/w/c/language/constant_expression>constant expressions</a> which I am leaving for later but it will be handled during semantic analysis.</p><p>The other major features I added were <code class=hljs>sizeof</code> and <code class=hljs>_Alignof</code>. These were pretty easy to add, but <code class=hljs>sizeof</code> expressions are pretty odd especially because of the optional <code class=hljs>()</code>.</p><p>As per usual here's an example with some of the new stuff.</p><pre><code>int main() {
     short a = 0;
     short b = 1;
     int x = sizeof a + b;
