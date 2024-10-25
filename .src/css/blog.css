@@ -6,6 +6,34 @@
 	line-height: 1.9;
 } */
 
+.blog-title {
+	margin-bottom: 35px;
+	border-bottom: thick solid yellow;
+}
+
+.blog-meta {
+	font-size: 95%;
+	margin-bottom: 20px;
+	color: gainsboro;
+	line-height: 1.9;
+}
+
+.blog-body {
+	font-size: 105%;
+	line-height: 1.9;
+}
+
+.blog-body > ul > li > p {
+	line-height: 1;
+	/* margin-bottom: 0 !important; */
+}
+
+
+.blog-body.code {
+	line-height: 1.6;
+	font-size: 110%;
+}
+
 .blog-header {
 	margin-top: 3rem;
 	margin-bottom: 0.5rem;

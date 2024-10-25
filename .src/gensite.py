@@ -299,8 +299,8 @@ def convert2html(filename: str) -> None:
         backref = None
 
     meta_prefix = f'<div class="blog-content"><header><h1 class="blog-title">{meta['title']}</h1></header><p class="blog-meta">{
-        meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body"></div>'
-    meta_suffix = '</div>'
+        meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body">'
+    meta_suffix = '</div></div>'
 
     articles.append(meta)
 
