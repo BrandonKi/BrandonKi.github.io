@@ -3,7 +3,7 @@ html {
 	height: 100%;
 	/* box-sizing: border-box; */
 	font-display: fallback;
-	background: #333;
+	background: #252525;
 	color: #fff;
 	scrollbar-gutter: stable;
 }
@@ -14,7 +14,7 @@ body {
 	box-sizing: border-box;
 	font-family: 'Roboto', sans-serif;
 	font-display: fallback;
-	background: #333;
+	background: inherit;
 	color: #fff;
 }
 
