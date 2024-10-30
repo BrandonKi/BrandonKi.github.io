@@ -40,6 +40,12 @@
 	font-weight: bold;
 }
 
+.blog-header:hover {
+    color: yellow;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 .blog-tag {
 	display: inline-block;
 	border-radius: 4px;

@@ -16,7 +16,20 @@
 
 	<title>Brandon Kirincich</title>
 </head>
-
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.blog-header').forEach(element => {
+        const id = element.textContent.trim().toLowerCase().replace(/ /g, '-');
+        element.id = id;
+        element.addEventListener('click', () => {
+            const url = "#" + element.id;
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+</script>
 
 <body>
 
