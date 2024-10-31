@@ -7,8 +7,7 @@
 </script><script>
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.blog-header').forEach(element => {
-        const id = element.textContent.trim().toLowerCase().replace(/ /g, '-');
-        element.id = id;
+        element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
         element.addEventListener('click', () => {
             const url = "#" + element.id;
             if (url) {
