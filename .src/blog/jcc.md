@@ -136,6 +136,57 @@ Preprocessor.
 
 Backend Refactor.
 
+## Commits 20-22
 
+Frontend Progress.
 
+## Commits 23-25
 
+More Frontend Progress !!
+
+## Commits 26-27
+
+Big Backend Refactor, especially for x86\_64.
+Also add liveness analysis.
+
+## Commits 28-31
+
+Add Mem2Reg Pass.
+Also, some small additions/changes.
+
+## Commits 32-34
+
+Passes for Control Flow Graph Creation and Visualization.
+
+## Commits 35-37
+
+Pass for PhiElim(aka Static Single Assignment(SSA) Deconstruction).
+
+## Commit 38
+
+Dead Code Elimination(DCE) Pass.
+
+## Commit 39
+
+Sparse Simple Constant Propagation(SSCP) Pass.
+
+## Commit 40
+
+JBIR Generation.
+
+## Commit 41
+
+Global Value Numbering(GVN) Pass.
+
+## Commit 42
+
+Peephole Pass.
+
+## Commits 43-44
+
+Loop-Invariant Code Motion(LICM) Pass.
+
+## Commits 45-46
+
+Inlining Pass.
+CFG Cleanup Pass.
