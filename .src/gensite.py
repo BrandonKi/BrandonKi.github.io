@@ -86,19 +86,19 @@ def main():
 # This is not a compliant markdown parser however.
 # It only accepts a nonstandard subset of markdown useful for making this website.
 def convert2html(filename: str) -> None:
-# <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     output = """
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/gruvbox-dark-soft.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-<script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css">
-<script defer>
+<link rel="stylesheet" href="../third_party/gruvbox-dark-soft.min.css">
+<script src="../third_party/highlight.min.js"></script>
+<script src="../third_party/highlightjs-copy.min.js"></script>
+<link rel="stylesheet" href="../third_party/highlightjs-copy.min.css">
+<script>
     hljs.addPlugin(new CopyButtonPlugin());
     hljs.highlightAll();
 </script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="../third_party/katex.min.css">
+<script defer src="../third_party/katex.min.js"></script>
+<script defer src="../third_party/auto-render.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         renderMathInElement(document.body, {
