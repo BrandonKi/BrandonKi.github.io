@@ -6,6 +6,7 @@ html {
 	background: #252525;
 	color: #fff;
 	scrollbar-gutter: stable;
+	scroll-behavior: smooth;
 }
 
 body {
