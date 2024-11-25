@@ -152,15 +152,61 @@ code {
 }
 
 
-/* @media screen and (max-width: 768px) {
 
-	h1 {
-		font-size: 100%;
-	}
-	h2 {
-		font-size: 100%;
-	}
-	h3 {
-		font-size: 100%;
-	}
-} */
+.rss-sticky-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #ff6600;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: width 0.3s ease, padding 0.3s ease;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.rss-sticky-button:hover {
+    width: 180px;
+    padding-left: 10px;
+    justify-content: flex-start;
+}
+
+.rss-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+.rss-tooltip {
+    opacity: 0;
+    transform: translateX(-20px);
+    margin-left: 10px;
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.rss-sticky-button:hover .rss-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.rss-link {
+    transform: translateX(65px);
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.rss-sticky-button:hover .rss-link {
+    transform: translateX(0);
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Brandon's Blog</title>
+    <link>https://brandonkirincich.com</link>
+    <description></description>
+    <language>en-us</language>
+    <item>
+      <title>Credit Card Arbitrage</title>
+      <link>https://brandonkirincich.com/blog/cc_arb.html</link>
+      <description></description>
+      <pubDate>13 Oct 2024 12:00:00 GMT</pubDate>
+      <guid>https://brandonkirincich.com/blog/cc_arb.html</guid>
+    </item>
+    <item>
+      <title>Static Site Generator Abomination</title>
+      <link>https://brandonkirincich.com/blog/ssg.html</link>
+      <description></description>
+      <pubDate>27 Sep 2024 12:00:00 GMT</pubDate>
+      <guid>https://brandonkirincich.com/blog/ssg.html</guid>
+    </item>
+    <item>
+      <title>Making A C Compiler (JCC)</title>
+      <link>https://brandonkirincich.com/blog/jcc.html</link>
+      <description></description>
+      <pubDate>19 Jul 2024 12:00:00 GMT</pubDate>
+      <guid>https://brandonkirincich.com/blog/jcc.html</guid>
+    </item>
+  </channel>
+</rss>
