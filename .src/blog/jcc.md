@@ -190,3 +190,15 @@ Loop-Invariant Code Motion(LICM) Pass.
 
 Inlining Pass.
 CFG Cleanup Pass.
+
+## Commits 48-49
+
+Pass Management.
+
+## Commits 50-51
+
+Instruction Encoding for x86\_64.
+
+## Commits 52-53
+
+Array Support.
