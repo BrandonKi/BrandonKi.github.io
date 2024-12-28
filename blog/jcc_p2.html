@@ -1,0 +1,34 @@
+<!doctype html><html lang=en style=background:#333;><head><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name=home content="Personal website for Brandon Kirincich."><style>html{background:#333;}</style><link rel=icon href=data:,><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css integrity=sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T crossorigin=anonymous><link rel=stylesheet href=../css/style.css><link rel=stylesheet href=../css/blog.css><title>Brandon Kirincich</title></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-NQ24QK0N6C"></script><script defer>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NQ24QK0N6C');
+</script><script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.blog-header').forEach(element => {
+        element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
+        element.addEventListener('click', () => {
+            const url = "#" + element.id;
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+</script><body><div style=position:sticky; class="d-md-none col-md-12 col-sm-12 col-12"><div class="row justify-content-end" style=top:0px><div class=col><div class="row justify-content-center"><h3><a class=chill-link href=/home>Home</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/portfolio>Portfolio</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/blog>Blog</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/resources>Resources</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/contact>Contact</a></h3></div></div></div></div><div class="container-fluid page-content-container"><div class=row><div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"></div><div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center"><div class=blog-content><header><h1 class=blog-title> JCC, Part 2: Making A C Compiler </h1></header><p class=blog-meta> Brandon Kirincich - December 28, 2024</p><div class=blog-body><link rel=stylesheet href=../third_party/gruvbox-dark-soft.min.css><script src=../third_party/highlight.min.js></script><script src=../third_party/highlightjs-copy.min.js></script><link rel=stylesheet href=../third_party/highlightjs-copy.min.css><script>
+    hljs.addPlugin(new CopyButtonPlugin());
+    hljs.highlightAll();
+</script><link rel=stylesheet href=../third_party/katex.min.css><script defer src=../third_party/katex.min.js></script><script defer src=../third_party/auto-render.min.js></script><script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError : false
+        });
+    });
+</script><p>Continuing on with the commit log I started in <a class=link href=jcc_p1.html>Part 1</a></p><h2 class=blog-header>Commits 26-27</h2><p>Big Backend Refactor, especially for x86_64.</p><p>Also add liveness analysis.</p><h2 class=blog-header>Commits 28-31</h2><p>Add Mem2Reg Pass.</p><p>Also, some small additions/changes.</p><h2 class=blog-header>Commits 32-34</h2><p>Passes for Control Flow Graph Creation and Visualization.</p><h2 class=blog-header>Commits 35-37</h2><p>Pass for PhiElim(aka Static Single Assignment(SSA) Deconstruction).</p><h2 class=blog-header>Commit 38</h2><p>Dead Code Elimination(DCE) Pass.</p><h2 class=blog-header>Commit 39</h2><p>Sparse Simple Constant Propagation(SSCP) Pass.</p><h2 class=blog-header>Commit 40</h2><p>JBIR Generation.</p><h2 class=blog-header>Commit 41</h2><p>Global Value Numbering(GVN) Pass.</p><h2 class=blog-header>Commit 42</h2><p>Peephole Pass.</p><h2 class=blog-header>Commits 43-44</h2><p>Loop-Invariant Code Motion(LICM) Pass.</p><h2 class=blog-header>Commits 45-47</h2><p>Inlining Pass.</p><p>CFG Cleanup Pass.</p><h2 class=blog-header>Commits 48-49</h2><p>Pass Management.</p><h2 class=blog-header>Commits 50-51</h2><p>Instruction Encoding for x86_64.</p><h2 class=blog-header>Commits 52-53</h2><p>Array Support.</p></div></div></div><div class="d-none d-md-block col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"><div class="row justify-content-end"><div class=col style="padding-right: 30px; border-right: thick solid yellow"><div class="row justify-content-end"><h3><a class=chill-link href=/home>Home</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/portfolio>Portfolio</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/blog>Blog</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/resources>Resources</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/contact>Contact</a></h2></div></div></div></div></div></div>

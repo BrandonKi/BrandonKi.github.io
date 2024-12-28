@@ -4,6 +4,10 @@ Uses a ~200 line python file to generate everything, including parsing markdown 
 
 To build:
 ```
+./build.bat
+```
+or
+```
 cd .src && python3 gensite.py . ..
 ```
 

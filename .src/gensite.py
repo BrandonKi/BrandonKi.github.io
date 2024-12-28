@@ -48,7 +48,10 @@ def main():
             outfile.write(output)
     
     articles = sorted(articles, key=lambda x: x['date'], reverse=True)
-    articles.insert(1, None)
+    articles.insert(2, None)
+
+    # articles = sorted(articles, key=lambda x: x['date'], reverse=True)
+    # articles.insert(2, None)
 
     # Main html
     html_files = in_directory.glob('*.html')
