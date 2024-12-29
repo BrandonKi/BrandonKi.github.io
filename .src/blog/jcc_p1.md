@@ -1,11 +1,11 @@
 ---
-title: JCC, Part 1: Making A C Compiler
+title: JCC: Making A C Compiler
 description: ''
 author: Brandon Kirincich
 date: 2024-07-19
 tags:
-  - JCC
-  - Compiler
+  - jcc
+  - compiler
 ---
 I started working on a C compiler a little while ago called [JCC](https://github.com/BrandonKi/jcc), and this is log of my progress over time.
 

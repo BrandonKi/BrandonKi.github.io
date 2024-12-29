@@ -4,8 +4,8 @@ description: 'Free Money?'
 author: Brandon Kirincich
 date: 2024-10-13
 tags:
-  - Finance
-  - Arbitrage
+  - finance
+  - arbitrage
 ---
 
 

@@ -1,11 +1,11 @@
 ---
-title: JCC, Part 2: Making A C Compiler
+title: JCC: Optimization And Analysis
 description: ''
 author: Brandon Kirincich
 date: 2024-12-28
 tags:
-  - JCC
-  - Compiler
+  - jcc
+  - compiler
 ---
 Continuing on with the commit log I started in [Part 1](jcc_p1.html)
 

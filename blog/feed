@@ -6,6 +6,13 @@
     <description></description>
     <language>en-us</language>
     <item>
+      <title>JCC: Making A C Compiler</title>
+      <link>https://brandonkirincich.com/blog/jcc_p2.html</link>
+      <description></description>
+      <pubDate>28 Dec 2024 12:00:00 GMT</pubDate>
+      <guid>https://brandonkirincich.com/blog/jcc_p2.html</guid>
+    </item>
+    <item>
       <title>Credit Card Arbitrage</title>
       <link>https://brandonkirincich.com/blog/cc_arb.html</link>
       <description></description>
@@ -20,11 +27,11 @@
       <guid>https://brandonkirincich.com/blog/ssg.html</guid>
     </item>
     <item>
-      <title>Making A C Compiler (JCC)</title>
-      <link>https://brandonkirincich.com/blog/jcc.html</link>
+      <title>JCC: Making A C Compiler</title>
+      <link>https://brandonkirincich.com/blog/jcc_p1.html</link>
       <description></description>
       <pubDate>19 Jul 2024 12:00:00 GMT</pubDate>
-      <guid>https://brandonkirincich.com/blog/jcc.html</guid>
+      <guid>https://brandonkirincich.com/blog/jcc_p1.html</guid>
     </item>
   </channel>
 </rss>

@@ -26,10 +26,12 @@ def main():
     in_directory = Path(sys.argv[1])
     out_directory = Path(sys.argv[2])
     blog_out_directory = Path(sys.argv[2]) / 'blog'
+    blog_tags_out_directory = Path(sys.argv[2]) / 'blog' / 'tags'
     css_out_directory = Path(sys.argv[2]) / 'css'
 
     out_directory.mkdir(exist_ok=True, parents=True)
     blog_out_directory.mkdir(exist_ok=True)
+    blog_tags_out_directory.mkdir(exist_ok=True)
     css_out_directory.mkdir(exist_ok=True)
 
     template = open(in_directory / 'templates' / 'template.html').read()
@@ -48,34 +50,53 @@ def main():
             outfile.write(output)
     
     articles = sorted(articles, key=lambda x: x['date'], reverse=True)
-    articles.insert(2, None)
 
-    # articles = sorted(articles, key=lambda x: x['date'], reverse=True)
-    # articles.insert(2, None)
+    deduped_tags = set()
+    blog_copy = ""
 
     # Main html
     html_files = in_directory.glob('*.html')
     for file in html_files:
-        with open(file, "r") as output:
+        with open(file, "r") as infile:
             with open(Path(out_directory / file.stem).with_suffix('.html'), "w") as outfile:
                 if file.stem == 'index':
-                    output = output.read()
+                    output = infile.read()
                 else:
-                    result = output.read()
+                    result = infile.read()
                     if file.stem == 'blog':
+                        blog_copy = result
                         for a in articles:
                             if a is None:
                                 result += '<h3 style="margin-top:4rem;">Work In Progress</h3>'
                             else:
                                 tags = ''
                                 for t in a['tags']:
-                                    tags += f'&nbsp<div class="blog-tag">&nbsp{t}&nbsp</div>&nbsp'
-                                result += f'<div>{a['date'].strftime("%b %d, %Y")} &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div>'
+                                    deduped_tags.add(t)
+                                    tags += f'&nbsp<a href="/blog/tags/{t}" class="blog-tag">&nbsp{t}&nbsp</a>&nbsp'
+                                result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
                         result += '</div></div>'
 
                     output = template.replace('{{Content}}', result)
                 if MINIFY: output = m.minify(output)
                 outfile.write(output)
+
+    # Make the tag pages
+    # NOTE: duplicated code from above ^^
+    for dt in deduped_tags:
+        with open(Path(blog_tags_out_directory / dt).with_suffix('.html'), "w") as outfile:
+            result = blog_copy
+            result += f'Filter:&nbsp<a href="../../blog" class="blog-tag">&nbsp{dt} <div class="blog-tag-x">X</div>&nbsp</a>'
+            for a in articles:
+                if dt in a['tags']:
+                    tags = ''
+                    for t in a['tags']:
+                        tags += f'&nbsp<a href="../../blog/tags/{t}" class="blog-tag">&nbsp{t}&nbsp</a>&nbsp'
+                    result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
+            result += '</div></div>'
+            output = template.replace('{{Content}}', result)
+            if MINIFY: output = m.minify(output)
+            outfile.write(output)
+
 
     # Copy css
     css_files = (in_directory / 'css').glob('*.css')
@@ -136,7 +157,7 @@ def convert2html(filename: str) -> None:
             in_meta = not in_meta
         elif in_meta:
             if line[0] == '-':
-                meta[key].append(line[1:])
+                meta[key].append(line[1:].strip())
                 continue
             key = line[0:line.find(':')]
             if len(key)+1 == len(line.strip()):

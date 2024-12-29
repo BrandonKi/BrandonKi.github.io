@@ -4,9 +4,9 @@ description: 'A quick look at how this website was made(the fun parts)'
 author: Brandon Kirincich
 date: 2024-09-27
 tags:
-  - Web
-  - SSG
-  - Fun
+  - web
+  - ssg
+  - fun
 ---
 
 I originally built this website using Go and hosted it on Google Cloud, but I decided to switch things up and save some money. Now, it's a simple static site hosted on GitHub Pages.

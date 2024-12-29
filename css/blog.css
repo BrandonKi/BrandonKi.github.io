@@ -47,10 +47,27 @@
 }
 
 .blog-tag {
+	color: white;
 	display: inline-block;
 	border-radius: 4px;
-	background-color: gray;
-	font-size: 80%;
+	background-color: #454545;
+	font-size: 85%;
+	font-family: monospace;
+}
+
+.blog-tag:hover {
+	color: white;
+	text-decoration: none;
+}
+
+.blog-tag-x {
+	display:inline-block;
+	text-align:center;
+	width:1.5em;
+	height:1.5em;
+	border-radius:50%;
+	background-color: #5A5A5A;
+	font-family: monospace;
 }
 
 figure {
