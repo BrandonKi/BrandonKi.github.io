@@ -73,7 +73,7 @@ def main():
                                 for t in a['tags']:
                                     deduped_tags.add(t)
                                     tags += f'&nbsp<a href="/blog/tags/{t}" class="blog-tag">&nbsp{t}&nbsp</a>&nbsp'
-                                result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
+                                result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
                         result += '</div></div>'
 
                     output = template.replace('{{Content}}', result)
@@ -91,7 +91,7 @@ def main():
                     tags = ''
                     for t in a['tags']:
                         tags += f'&nbsp<a href="../../blog/tags/{t}" class="blog-tag">&nbsp{t}&nbsp</a>&nbsp'
-                    result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
+                    result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
             result += '</div></div>'
             output = template.replace('{{Content}}', result)
             if MINIFY: output = m.minify(output)
@@ -112,8 +112,8 @@ def main():
 def convert2html(filename: str) -> None:
     output = """
 <link rel="stylesheet" href="../third_party/gruvbox-dark-soft.min.css">
-<script src="../third_party/highlight.min.js"></script>
-<script src="../third_party/highlightjs-copy.min.js"></script>
+<script rel="preload" src="../third_party/highlight.min.js"></script>
+<script rel="preload" src="../third_party/highlightjs-copy.min.js"></script>
 <link rel="stylesheet" href="../third_party/highlightjs-copy.min.css">
 <script>
     hljs.addPlugin(new CopyButtonPlugin());
@@ -121,8 +121,8 @@ def convert2html(filename: str) -> None:
 </script>
 
 <link rel="stylesheet" href="../third_party/katex.min.css">
-<script defer src="../third_party/katex.min.js"></script>
-<script defer src="../third_party/auto-render.min.js"></script>
+<script rel="preload" src="../third_party/katex.min.js"></script>
+<script rel="preload" src="../third_party/auto-render.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         renderMathInElement(document.body, {
@@ -286,7 +286,8 @@ def convert2html(filename: str) -> None:
                 elif in_image and in_href and c == ')':
                     in_image = False
                     in_href = False
-                    output += f'<figure><img width="650px" src="{saved_href}"><figcaption>{saved_link}</figcaption></figure>'
+                    output += f'<figure><img class="blog-image" src="{saved_href}"><figcaption>{saved_link}</figcaption></figure>'
+                    # output += f'<figure><img width="650px" src="{saved_href}"><figcaption>{saved_link}</figcaption></figure>'
                     saved_link = ""
                     saved_href = ""
                 elif in_href and c == ')':

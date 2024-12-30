@@ -1,5 +1,5 @@
 ---
-title: JCC: Optimization And Analysis
+title: [WIP] JCC: Optimization And Analysis
 description: ''
 author: Brandon Kirincich
 date: 2024-12-28
@@ -7,10 +7,13 @@ tags:
   - jcc
   - compiler
 ---
-Continuing on with the commit log I started in [Part 1](jcc_p1.html)
+Continuing on with the commit log I started in [Part 1](jcc_p1.html).
+
+I also wrote an entire detailed report on topics learned while making these commits [here](https://github.com/BrandonKi/IndependentStudy/blob/main/final_report.pdf), but this will be much more approachable.
 
 ## Commits 26-27
 
+WIP
 Big Backend Refactor, especially for x86\_64.
 Also add liveness analysis.
 

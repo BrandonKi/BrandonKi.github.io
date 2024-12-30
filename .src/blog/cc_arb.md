@@ -71,7 +71,7 @@ However, this isn't risk-free, and the safer route still provides an easy profit
 
 Overall, this can be a way to generate some extra cash with minimal effort, but there are downsides. High credit utilization can negatively impact your credit score, and it also requires a significant amount of available capital upfront. Because of this, there are likely more practical investment options available.
 
-## Notes
+## Footnotes
 
 [^1]: Just for completeness, it's also possible to get better risk-free returns from CDs or even some HYSAs. I decided to stick with T Bills for this though.
 
