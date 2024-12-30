@@ -79,6 +79,11 @@ figcaption {
 	color: lightgray;
 }
 
+.blog-image {
+	max-width: 650px;
+	width: 100%;
+}
+
 /* .blog-title {
 
 } */

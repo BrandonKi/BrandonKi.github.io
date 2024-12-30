@@ -23,6 +23,10 @@ body {
 	box-sizing: inherit;
 }
 
+::selection {
+	background: #5379C4CC !important;
+}
+
 h1 {
 	/* font-size: 4vw; */
 	font-weight: bold;

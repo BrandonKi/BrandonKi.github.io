@@ -75,8 +75,6 @@ for c in line:
     # many more similar elif statements....
 ```
 
-TODO: walk through parsing a single Markdown line with this approach
-
 I did end up using one external package for HTML minification, but it’s completely optional and doesn’t impact functionality. The resulting pages are so small that the minification has almost no effect on load time.
 
 As an ending note, please don't ever seriously do this. :)

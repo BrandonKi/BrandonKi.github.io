@@ -62,9 +62,9 @@ int main() {
 
 ## Commit 6
 
-Up until this point only ints have been supported but I started laying the groundwork for the other builtin types and type checking. Parsing types in C is... not fun as you all probably know, but not as bad as C++.
+Up until this point only `int` has been supported, but I started laying the groundwork for the other builtin types and type checking. Parsing types in C is... not fun, as you all probably know, but not as bad as C++.
 
-What's even more unfortunate is they appear before the identifier for a variable/function so they're not even easy to ignore. As a result I put together a bunch of hacks to make parsing work (kinda) for simpler cases, this is something I'll have to revisit when more features are added.
+What's even more unfortunate is they appear before the identifier for a variable/function so they're not even easy to ignore. For this reason, I put together a bunch of hacks to make parsing work (kinda) for simpler cases, this is something I'll have to revisit when more features are added.
 
 Also, currently the compiler crashes whenever it encounters an error which isn't very user-friendly! It may be time to add better error reporting soon.
 
@@ -129,18 +129,129 @@ int main() {
 
 ## Commits 14-16
 
-ICE.
-Preprocessor.
+In this project, I took an approach of being very liberal with asserts. Rather than allowing the program to continue in an invalid state, I crash early and often. This approach has saved me a lot of debugging time, since each assert gives a reason for the failing as well.
+Although, one issue is, even with asserts, the root cause of the bug is often some arbitrary amount of code prior to where the assert fires. Luckily, this is a compiler, and it's single threaded, so just running the same input again should almost always exibit the incorrect behavior again. However, this can be made even easier if asserts simply printed out a stacktrace, so I created an Internal Compiler Error(ICE) macro.[^1] It is functionally equivalent to an assert, but prints a proper stacktrace.
+
+There also some other easy debug features I can add as well. For example, simply printing out the current position being parsed in the file, and the last and next few tokens. 
+
+I recently started using [X Macros](https://en.wikipedia.org/wiki/X_macro). In compilers, it's common to define long enums that need to be reused across multiple contexts. Without X Macros, this often means copying and pasting the enum members, extra care must be taken to keep all of these pasted locations in sync though. With X Macros, I can avoid the duplication and ensure all these locations stay synchronized.
+
+Additionally, X Macros allow me to associate extra information with each enum item. For example, I can include textual representations of tokens directly within the enum definition, as shown below. Of course, this would be much easier and uneccessary if C++ had proper metaprogramming support though.
+
+Here’s an example from my lexer token definitions. I'm able to use the same token definitions in multiple different contexts without duplicating the over 100 entries.
+
+```
+// Defining each entry in token_kinds.inc
+X(_inc, -58, "++")
+X(_dec, -59, "--")
+X(_arrow, -60, "->")
+X(_star_equal, -61, "*=")
+X(_slash_equal, -62, "/=")
+...
+
+// Using an X macro for enum definition
+#define X(a, b, _) a = b,
+enum TokenKind : char {
+    #include "inc/token_kinds.inc"
+};
+#undef X
+
+// Using an X macro for a switch statement
+#define X(a, b, c)     \
+    case TokenKind::a: \
+        result = c;    \
+        break;
+switch (token.kind) {
+#include "inc/token_kinds.inc"
+default:
+    ice(false);
+}
+```
+
+Lastly, I made progress on the C preprocessor implementation, but only basic functionality. Since it's not fully detailed in the spec, for correctness, it's partially based on this [pdf](https://www.spinellis.gr/blog/20060626/cpp.algo.pdf).
 
 ## Commits 17-19
 
-Backend Refactor.
+The focus of these few commits has just been refactoring the custom backend(JB).
+
+- MCIR is now machine independent
+- Register allocation is done on MCIR instead of JBIR now
+- Added a baseline interpreter
+- Reworked immediates/labels/values
+- JBIR instructions were added/removed/renamed
+- Added "stack slots", so values can be used normally from the stack now
+- Completely reworked x86\_64 codegen to be more like a macro assembler
 
 ## Commits 20-22
 
 Frontend Progress.
 
+- Preprocessor expansion bug fix
+- Move allocas to beginning of function
+- Start conditional include implementation
+- Intern strings across the whole AST
+- Can now `#include` basic stdlib files, such as `stdbool.h`
+
+Here's a small example.
+
+```
+#include <stdbool.h>
+
+#define COND1
+int main() {
+#ifdef COND1
+#ifdef COND2
+    return true;
+#else
+    return 2; // returns 2
+#endif
+#else
+    return 100;
+#endif
+    return false;
+}
+```
+
 ## Commits 23-25
 
-More Frontend Progress !!
+More Frontend Progress!
 
+- structs
+- constant expressions
+- `#if`
+- `defined`
+- `&&` and `||` in constant contexts
+- refactored lvalue codegen
+- added `->`
+- stringize operator `#`
+
+Also, a small bug fix. Object-like macros starting with open paren now parse correctly, previously they would incorrectly be parsed as a function-like macro
+
+```
+// object-like
+#define test (a)
+
+// function-like
+#define test(a) a
+```
+
+Code like this now works correctly!
+
+```
+int main() {
+    struct Pair {
+        long long a;
+        int b;
+    };
+    struct Pair s;
+    struct Pair *ptr = &s;
+    s.a = 5;
+    s.b = 10;
+    return ptr->a + ptr->b; // returns 15
+}
+```
+
+
+## Footnotes
+
+[^1]: A small explanation since I was confused for the reason behind this terminology the first time I saw it. It's commonly referred to as an Internal Compiler Error(ICE) rather than just an error because reporting errors is part of the core functionality of a compiler. In order to remove ambiguity most compilers call this situation an ICE, especially when communicating that an error occurred to the the end user, so they know the issue wasn't in their code.

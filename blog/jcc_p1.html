@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-</script><body><div style=position:sticky; class="d-md-none col-md-12 col-sm-12 col-12"><div class="row justify-content-end" style=top:0px><div class=col><div class="row justify-content-center"><h3><a class=chill-link href=/home>Home</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/portfolio>Portfolio</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/blog>Blog</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/resources>Resources</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/contact>Contact</a></h3></div></div></div></div><div class="container-fluid page-content-container"><div class=row><div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"></div><div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center"><div class=blog-content><header><h1 class=blog-title> JCC: Making A C Compiler </h1></header><p class=blog-meta> Brandon Kirincich - July 19, 2024</p><div class=blog-body><link rel=stylesheet href=../third_party/gruvbox-dark-soft.min.css><script src=../third_party/highlight.min.js></script><script src=../third_party/highlightjs-copy.min.js></script><link rel=stylesheet href=../third_party/highlightjs-copy.min.css><script>
+</script><body><div style=position:sticky; class="d-md-none col-md-12 col-sm-12 col-12"><div class="row justify-content-end" style=top:0px><div class=col><div class="row justify-content-center"><h3><a class=chill-link href=/home>Home</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/portfolio>Portfolio</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/blog>Blog</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/resources>Resources</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/contact>Contact</a></h3></div></div></div></div><div class="container-fluid page-content-container"><div class=row><div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"></div><div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center"><div class=blog-content><header><h1 class=blog-title> JCC: Making A C Compiler </h1></header><p class=blog-meta> Brandon Kirincich - July 19, 2024</p><div class=blog-body><link rel=stylesheet href=../third_party/gruvbox-dark-soft.min.css><script rel=preload src=../third_party/highlight.min.js></script><script rel=preload src=../third_party/highlightjs-copy.min.js></script><link rel=stylesheet href=../third_party/highlightjs-copy.min.css><script>
     hljs.addPlugin(new CopyButtonPlugin());
     hljs.highlightAll();
-</script><link rel=stylesheet href=../third_party/katex.min.css><script defer src=../third_party/katex.min.js></script><script defer src=../third_party/auto-render.min.js></script><script>
+</script><link rel=stylesheet href=../third_party/katex.min.css><script rel=preload src=../third_party/katex.min.js></script><script rel=preload src=../third_party/auto-render.min.js></script><script>
     document.addEventListener("DOMContentLoaded", function() {
         renderMathInElement(document.body, {
           delimiters: [
@@ -48,7 +48,7 @@ int main() {
     t += 1;
     return identity(t);
 }
-</pre></code><h2 class=blog-header>Commit 6</h2><p>Up until this point only ints have been supported but I started laying the groundwork for the other builtin types and type checking. Parsing types in C is... not fun as you all probably know, but not as bad as C++.</p><p>What's even more unfortunate is they appear before the identifier for a variable/function so they're not even easy to ignore. As a result I put together a bunch of hacks to make parsing work (kinda) for simpler cases, this is something I'll have to revisit when more features are added.</p><p>Also, currently the compiler crashes whenever it encounters an error which isn't very user-friendly! It may be time to add better error reporting soon.</p><p>The major features I added this time were string literals, extern function, and char pointers. I can now run the classic <a class=link href=https://en.wikipedia.org/wiki/%22Hello,_World!%22_program>Hello World!</a> program. During this I also realized my test runner can't check for correct STDOUT results yet, but that's a problem for future me. Anyways, here's another example of the new features in action.</p><pre><code>extern int printf(char *);
+</pre></code><h2 class=blog-header>Commit 6</h2><p>Up until this point only <code class=hljs>int</code> has been supported, but I started laying the groundwork for the other builtin types and type checking. Parsing types in C is... not fun, as you all probably know, but not as bad as C++.</p><p>What's even more unfortunate is they appear before the identifier for a variable/function so they're not even easy to ignore. For this reason, I put together a bunch of hacks to make parsing work (kinda) for simpler cases, this is something I'll have to revisit when more features are added.</p><p>Also, currently the compiler crashes whenever it encounters an error which isn't very user-friendly! It may be time to add better error reporting soon.</p><p>The major features I added this time were string literals, extern function, and char pointers. I can now run the classic <a class=link href=https://en.wikipedia.org/wiki/%22Hello,_World!%22_program>Hello World!</a> program. During this I also realized my test runner can't check for correct STDOUT results yet, but that's a problem for future me. Anyways, here's another example of the new features in action.</p><pre><code>extern int printf(char *);
 extern void puts(char *);
 int main() {
     char *a = "Hello World!";
@@ -59,7 +59,7 @@ int main() {
 </pre></code><h2 class=blog-header>Commits 7-11</h2><p>A lot of progress was made. Here's the major features that were added:</p><ul><li><p>if/else statements</p></li><li><p>for loops</p></li><li><p>do/while loops</p></li><li><p>++/-- operators</p></li></ul><p>I also did a big cleanup pass over the existing code which was pretty easy since this project is still in it's early stages. Making an example to showcase all of these changes is too hard so here's a small one.</p><pre><code>int main() {
     int a = 0;
 
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i &lt; 10; i++) {
         if(i % 2 == 0)
             a += i;
         else
@@ -75,4 +75,60 @@ int main() {
     int y = sizeof(a + b);
     return x + y; // returns 7
 }
-</pre></code><h2 class=blog-header>Commits 14-16</h2><p>ICE.</p><p>Preprocessor.</p><h2 class=blog-header>Commits 17-19</h2><p>Backend Refactor.</p><h2 class=blog-header>Commits 20-22</h2><p>Frontend Progress.</p><h2 class=blog-header>Commits 23-25</h2><p>More Frontend Progress !!</p></div></div></div><div class="d-none d-md-block col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"><div class="row justify-content-end"><div class=col style="padding-right: 30px; border-right: thick solid yellow"><div class="row justify-content-end"><h3><a class=chill-link href=/home>Home</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/portfolio>Portfolio</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/blog>Blog</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/resources>Resources</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/contact>Contact</a></h2></div></div></div></div></div></div>
+</pre></code><h2 class=blog-header>Commits 14-16</h2><p>In this project, I took an approach of being very liberal with asserts. Rather than allowing the program to continue in an invalid state, I crash early and often. This approach has saved me a lot of debugging time, since each assert gives a reason for the failing as well.</p><p>Although, one issue is, even with asserts, the root cause of the bug is often some arbitrary amount of code prior to where the assert fires. Luckily, this is a compiler, and it's single threaded, so just running the same input again should almost always exibit the incorrect behavior again. However, this can be made even easier if asserts simply printed out a stacktrace, so I created an Internal Compiler Error(ICE) macro.<sup><a class=link id=backref1 href=#footnote1>1</a></sup>It is functionally equivalent to an assert, but prints a proper stacktrace.</p><p>There also some other easy debug features I can add as well. For example, simply printing out the current position being parsed in the file, and the last and next few tokens. </p><p>I recently started using <a class=link href=https://en.wikipedia.org/wiki/X_macro>X Macros</a>. In compilers, it's common to define long enums that need to be reused across multiple contexts. Without X Macros, this often means copying and pasting the enum members, extra care must be taken to keep all of these pasted locations in sync though. With X Macros, I can avoid the duplication and ensure all these locations stay synchronized.</p><p>Additionally, X Macros allow me to associate extra information with each enum item. For example, I can include textual representations of tokens directly within the enum definition, as shown below. Of course, this would be much easier and uneccessary if C++ had proper metaprogramming support though.</p><p>Here’s an example from my lexer token definitions. I'm able to use the same token definitions in multiple different contexts without duplicating the over 100 entries.</p><pre><code>// Defining each entry in token_kinds.inc
+X(_inc, -58, "++")
+X(_dec, -59, "--")
+X(_arrow, -60, "-&gt;")
+X(_star_equal, -61, "*=")
+X(_slash_equal, -62, "/=")
+...
+
+// Using an X macro for enum definition
+#define X(a, b, _) a = b,
+enum TokenKind : char {
+    #include "inc/token_kinds.inc"
+};
+#undef X
+
+// Using an X macro for a switch statement
+#define X(a, b, c)     \
+    case TokenKind::a: \
+        result = c;    \
+        break;
+switch (token.kind) {
+#include "inc/token_kinds.inc"
+default:
+    ice(false);
+}
+</pre></code><p>Lastly, I made progress on the C preprocessor implementation, but only basic functionality. Since it's not fully detailed in the spec, for correctness, it's partially based on this <a class=link href=https://www.spinellis.gr/blog/20060626/cpp.algo.pdf>pdf</a>.</p><h2 class=blog-header>Commits 17-19</h2><p>The focus of these few commits has just been refactoring the custom backend(JB).</p><ul><li><p>MCIR is now machine independent</p></li><li><p>Register allocation is done on MCIR instead of JBIR now</p></li><li><p>Added a baseline interpreter</p></li><li><p>Reworked immediates/labels/values</p></li><li><p>JBIR instructions were added/removed/renamed</p></li><li><p>Added "stack slots", so values can be used normally from the stack now</p></li><li><p>Completely reworked x86_64 codegen to be more like a macro assembler</p></li></ul><h2 class=blog-header>Commits 20-22</h2><p>Frontend Progress.</p><ul><li><p>Preprocessor expansion bug fix</p></li><li><p>Move allocas to beginning of function</p></li><li><p>Start conditional include implementation</p></li><li><p>Intern strings across the whole AST</p></li><li><p>Can now <code class=hljs>#include</code> basic stdlib files, such as <code class=hljs>stdbool.h</code></p></li></ul><p>Here's a small example.</p><pre><code>#include &lt;stdbool.h&gt;
+
+#define COND1
+int main() {
+#ifdef COND1
+#ifdef COND2
+    return true;
+#else
+    return 2; // returns 2
+#endif
+#else
+    return 100;
+#endif
+    return false;
+}
+</pre></code><h2 class=blog-header>Commits 23-25</h2><p>More Frontend Progress! <ul><li><p>structs</p></li><li><p>constant expressions</p></li><li><p><code class=hljs>#if</code></p></li><li><p><code class=hljs>defined</code></p></li><li><p><code class=hljs>&&</code> and <code class=hljs>||</code> in constant contexts</p></li><li><p>refactored lvalue codegen</p></li><li><p>added <code class=hljs>-></code></p></li><li><p>stringize operator <code class=hljs>#</code></p></li></ul><p>Also, a small bug fix. Object-like macros starting with open paren now parse correctly, previously they would incorrectly be parsed as a function-like macro</p><pre><code>// object-like
+#define test (a)
+
+// function-like
+#define test(a) a
+</pre></code><p>Code like this now works correctly! <pre><code>int main() {
+    struct Pair {
+        long long a;
+        int b;
+    };
+    struct Pair s;
+    struct Pair *ptr = &s;
+    s.a = 5;
+    s.b = 10;
+    return ptr-&gt;a + ptr-&gt;b; // returns 15
+}
+</pre></code><h2 class=blog-header>Footnotes</p></h2><ol><li id=footnote1><p>A small explanation since I was confused for the reason behind this terminology the first time I saw it. It's commonly referred to as an Internal Compiler Error(ICE) rather than just an error because reporting errors is part of the core functionality of a compiler. In order to remove ambiguity most compilers call this situation an ICE, especially when communicating that an error occurred to the the end user, so they know the issue wasn't in their code.&nbsp<a class=link style="font-family: monospace;" href=#backref1>&#x21A9;</a>&nbsp</p></li></div></div></div><div class="d-none d-md-block col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"><div class="row justify-content-end"><div class=col style="padding-right: 30px; border-right: thick solid yellow"><div class="row justify-content-end"><h3><a class=chill-link href=/home>Home</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/portfolio>Portfolio</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/blog>Blog</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/resources>Resources</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/contact>Contact</a></h2></div></div></div></div></div></div>

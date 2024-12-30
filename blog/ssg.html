@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-</script><body><div style=position:sticky; class="d-md-none col-md-12 col-sm-12 col-12"><div class="row justify-content-end" style=top:0px><div class=col><div class="row justify-content-center"><h3><a class=chill-link href=/home>Home</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/portfolio>Portfolio</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/blog>Blog</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/resources>Resources</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/contact>Contact</a></h3></div></div></div></div><div class="container-fluid page-content-container"><div class=row><div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"></div><div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center"><div class=blog-content><header><h1 class=blog-title> Static Site Generator Abomination </h1></header><p class=blog-meta> Brandon Kirincich - September 27, 2024</p><div class=blog-body><link rel=stylesheet href=../third_party/gruvbox-dark-soft.min.css><script src=../third_party/highlight.min.js></script><script src=../third_party/highlightjs-copy.min.js></script><link rel=stylesheet href=../third_party/highlightjs-copy.min.css><script>
+</script><body><div style=position:sticky; class="d-md-none col-md-12 col-sm-12 col-12"><div class="row justify-content-end" style=top:0px><div class=col><div class="row justify-content-center"><h3><a class=chill-link href=/home>Home</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/portfolio>Portfolio</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/blog>Blog</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/resources>Resources</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/contact>Contact</a></h3></div></div></div></div><div class="container-fluid page-content-container"><div class=row><div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"></div><div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center"><div class=blog-content><header><h1 class=blog-title> Static Site Generator Abomination </h1></header><p class=blog-meta> Brandon Kirincich - September 27, 2024</p><div class=blog-body><link rel=stylesheet href=../third_party/gruvbox-dark-soft.min.css><script rel=preload src=../third_party/highlight.min.js></script><script rel=preload src=../third_party/highlightjs-copy.min.js></script><link rel=stylesheet href=../third_party/highlightjs-copy.min.css><script>
     hljs.addPlugin(new CopyButtonPlugin());
     hljs.highlightAll();
-</script><link rel=stylesheet href=../third_party/katex.min.css><script defer src=../third_party/katex.min.js></script><script defer src=../third_party/auto-render.min.js></script><script>
+</script><link rel=stylesheet href=../third_party/katex.min.css><script rel=preload src=../third_party/katex.min.js></script><script rel=preload src=../third_party/auto-render.min.js></script><script>
     document.addEventListener("DOMContentLoaded", function() {
         renderMathInElement(document.body, {
           delimiters: [
@@ -44,20 +44,20 @@ for c in line:
         unconsumed_sup = True
     # some uninteresting elifs here were elided for readability
     elif unconsumed_link and unconsumed_sup:
-        output += f'<sup><a class=link href=#footnote{saved_link}>{saved_link}</a></sup>'
+        output += f'&lt;sup&gt;&lt;a class="link" href="#footnote{saved_link}"&gt;{saved_link}&lt;/a&gt;&lt;/sup&gt;'
         unconsumed_link = False
         unconsumed_sup = False
         saved_link = ""
     elif unconsumed_link and unconsumed_sup:
-        output += f'<sup><a class=link href=#footnote{saved_link}>{saved_link}</a></sup>'
+        output += f'&lt;sup&gt;&lt;a class="link" href="#footnote{saved_link}"&gt;{saved_link}&lt;/a&gt;&lt;/sup&gt;'
         unconsumed_link = False
         unconsumed_sup = False
         saved_link = ""
     elif in_image and in_href and c == ')':
         in_image = False
         in_href = False
-        output += f'<figure><img src={saved_href}><figcaption>{saved_link}</figcaption></figure>'
+        output += f'&lt;figure&gt;&lt;img src="{saved_href}"&gt;&lt;figcaption&gt;{saved_link}&lt;/figcaption&gt;&lt;/figure&gt;'
         saved_link = ""
         saved_href = ""
     # many more similar elif statements....
-</pre></code><p>TODO: walk through parsing a single Markdown line with this approach</p><p>I did end up using one external package for HTML minification, but it’s completely optional and doesn’t impact functionality. The resulting pages are so small that the minification has almost no effect on load time.</p><p>As an ending note, please don't ever seriously do this. :)</p></div></div></div><div class="d-none d-md-block col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"><div class="row justify-content-end"><div class=col style="padding-right: 30px; border-right: thick solid yellow"><div class="row justify-content-end"><h3><a class=chill-link href=/home>Home</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/portfolio>Portfolio</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/blog>Blog</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/resources>Resources</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/contact>Contact</a></h2></div></div></div></div></div></div>
+</pre></code><p>I did end up using one external package for HTML minification, but it’s completely optional and doesn’t impact functionality. The resulting pages are so small that the minification has almost no effect on load time.</p><p>As an ending note, please don't ever seriously do this. :)</p></div></div></div><div class="d-none d-md-block col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"><div class="row justify-content-end"><div class=col style="padding-right: 30px; border-right: thick solid yellow"><div class="row justify-content-end"><h3><a class=chill-link href=/home>Home</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/portfolio>Portfolio</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/blog>Blog</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/resources>Resources</a></h2></div><div class="row justify-content-end"><h3><a class=chill-link href=/contact>Contact</a></h2></div></div></div></div></div></div>
