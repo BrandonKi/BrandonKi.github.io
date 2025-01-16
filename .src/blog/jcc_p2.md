@@ -9,7 +9,7 @@ tags:
 ---
 Continuing on with the commit log I started in [Part 1](jcc_p1.html).
 
-I also wrote an entire detailed report on topics learned while making these commits [here](https://github.com/BrandonKi/IndependentStudy/blob/main/final_report.pdf), but this will be much more approachable.
+I also wrote an entire detailed report on topics learned while making these commits [here](/res/final_report.pdf), but this will be much more approachable.
 
 ## Commits 26-27
 
