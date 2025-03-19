@@ -11,11 +11,25 @@ Continuing on with the commit log I started in [Part 1](jcc_p1.html).
 
 I also wrote an entire detailed report on topics learned while making these commits [here](/res/final_report.pdf), but this will be much more approachable.
 
+Work In Progress...
+
 ## Commits 26-27
 
-WIP
-Big Backend Refactor, especially for x86\_64.
+Big Backend Refactor, especially for x86\_64:
+
+- Merge returns and fix prolog/epilog in x86_64
+- Start following windows ABI more closely for x86_64 backend
+- Start using State(def/use/kill) for machine instruction operands
+- Implemented br, brz, brnz in x86_64 and interp backends
+- Add "id" IROp.
+- Minor fixes for module-wide regalloc
+
+One of the major goals for the whole backend refactor over the past few commits was delaying register allocation until later in the pipeline. So now, instead of register allocation being done on JBIR and before generating MCIR, now it is done before Machine Code Generation. 
+
+![New Flow Chart](flow_chart.png)
+
 Also add liveness analysis.
+Implement basic-block-level liveness analysis
 
 ## Commits 28-31
 
