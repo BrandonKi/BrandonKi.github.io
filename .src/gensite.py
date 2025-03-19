@@ -97,14 +97,21 @@ def main():
             if MINIFY: output = m.minify(output)
             outfile.write(output)
 
-
     # Copy css
     css_files = (in_directory / 'css').glob('*.css')
     for file in css_files:
         with open(file, "r") as output:
             with open(Path(out_directory / 'css' / file.stem).with_suffix('.css'), "w") as outfile:
+                output = output.read()
+                if MINIFY: output = m.minify(output)
+                outfile.write(output)
+
+    # Copy images
+    img_files = (in_directory / 'blog').glob('*.[jpg][png]*')
+    for file in img_files:
+        with open(file, "rb") as output:
+            with open(Path(out_directory / 'blog' / file.stem).with_suffix(file.suffix), "wb") as outfile:
                 outfile.write(output.read())
-                # outfile.write(m.minify(output.read()))
 
 # Converts markdown to html, nothing complicated.
 # This is not a compliant markdown parser however.

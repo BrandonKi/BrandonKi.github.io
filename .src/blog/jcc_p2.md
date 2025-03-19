@@ -17,18 +17,18 @@ Work In Progress...
 
 Big Backend Refactor, especially for x86\_64:
 
-- Merge returns and fix prolog/epilog in x86_64
-- Start following windows ABI more closely for x86_64 backend
+- Merge returns and fix prolog/epilog in x86\_64
+- Start following windows ABI more closely for x86\_64 backend
 - Start using State(def/use/kill) for machine instruction operands
-- Implemented br, brz, brnz in x86_64 and interp backends
+- Implemented br, brz, brnz in x86\_64 and interp backends
 - Add "id" IROp.
 - Minor fixes for module-wide regalloc
 
 One of the major goals for the whole backend refactor over the past few commits was delaying register allocation until later in the pipeline. So now, instead of register allocation being done on JBIR and before generating MCIR, now it is done before Machine Code Generation. 
 
-![New Flow Chart](flow_chart.png)
+![New Pipeline](flow_chart.png)
 
-Also add liveness analysis.
+Also added liveness analysis.
 Implement basic-block-level liveness analysis
 
 ## Commits 28-31
