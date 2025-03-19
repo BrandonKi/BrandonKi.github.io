@@ -254,4 +254,4 @@ int main() {
 
 ## Footnotes
 
-[^1]: A small explanation since I was confused for the reason behind this terminology the first time I saw it. It's commonly referred to as an Internal Compiler Error(ICE) rather than just an error because reporting errors is part of the core functionality of a compiler. In order to remove ambiguity most compilers call this situation an ICE, especially when communicating that an error occurred to the the end user, so they know the issue wasn't in their code.
+[^1]: A small explanation since I was confused for the reason behind this terminology the first time I saw it. It's commonly referred to as an Internal Compiler Error(ICE) rather than just an error because reporting errors is part of the core functionality of a compiler. In order to remove ambiguity most compilers call this situation an ICE, especially when communicating that an error occurred to the end user, so they know the issue wasn't in their code.
