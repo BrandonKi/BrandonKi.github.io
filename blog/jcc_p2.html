@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-</script><body><div style=position:sticky; class="d-md-none col-md-12 col-sm-12 col-12"><div class="row justify-content-end" style=top:0px><div class=col><div class="row justify-content-center"><h3><a class=chill-link href=/home>Home</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/portfolio>Portfolio</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/blog>Blog</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/resources>Resources</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/contact>Contact</a></h3></div></div></div></div><div class="container-fluid page-content-container"><div class=row><div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"></div><div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center"><div class=blog-content><header><h1 class=blog-title> [WIP] JCC: Optimization And Analysis </h1></header><p class=blog-meta> Brandon Kirincich - December 28, 2024</p><div class=blog-body><link rel=stylesheet href=../third_party/gruvbox-dark-soft.min.css><script rel=preload src=../third_party/highlight.min.js></script><script rel=preload src=../third_party/highlightjs-copy.min.js></script><link rel=stylesheet href=../third_party/highlightjs-copy.min.css><script>
+</script><body><div style=position:sticky; class="d-md-none col-md-12 col-sm-12 col-12"><div class="row justify-content-end" style=top:0px><div class=col><div class="row justify-content-center"><h3><a class=chill-link href=/home>Home</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/portfolio>Portfolio</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/blog>Blog</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/resources>Resources</a></h3> &nbsp; <h4 style=color:yellow;>|</h4> &nbsp; <h3><a class=chill-link href=/contact>Contact</a></h3></div></div></div></div><div class="container-fluid page-content-container"><div class=row><div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"></div><div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center"><div class=blog-content><header><h1 class=blog-title> JCC: Optimization And Analysis </h1></header><p class=blog-meta> Brandon Kirincich - December 28, 2024</p><div class=blog-body><link rel=stylesheet href=../third_party/gruvbox-dark-soft.min.css><script rel=preload src=../third_party/highlight.min.js></script><script rel=preload src=../third_party/highlightjs-copy.min.js></script><link rel=stylesheet href=../third_party/highlightjs-copy.min.css><script>
     hljs.addPlugin(new CopyButtonPlugin());
     hljs.highlightAll();
 </script><link rel=stylesheet href=../third_party/katex.min.css><script rel=preload src=../third_party/katex.min.js></script><script rel=preload src=../third_party/auto-render.min.js></script><script>
@@ -31,7 +31,133 @@ document.addEventListener('DOMContentLoaded', () => {
           throwOnError : false
         });
     });
-</script><p>Continuing on with the commit log I started in <a class=link href=jcc_p1.html>Part 1</a>.</p><p>I also wrote an entire detailed report on topics learned while making these commits <a class=link href=/res/final_report.pdf>here</a>, but this will be much more approachable.</p><p>Work In Progress...</p><h2 class=blog-header>Commits 26-27</h2><p>Big Backend Refactor, especially for x86_64:</p><ul><li><p>Merge returns and fix prolog/epilog in x86_64</p></li><li><p>Start following windows ABI more closely for x86_64 backend</p></li><li><p>Start using State(def/use/kill) for machine instruction operands</p></li><li><p>Implemented br, brz, brnz in x86_64 and interp backends</p></li><li><p>Add "id" IROp.</p></li><li><p>Minor fixes for module-wide regalloc</p></li></ul><p>One of the major goals for the whole backend refactor over the past few commits was delaying register allocation until later in the pipeline. So now, instead of register allocation being done on JBIR and before generating MCIR, now it is done before Machine Code Generation. </p><figure><img class=blog-image src=flow_chart.png><figcaption>New Pipeline</figcaption></figure><p>Also added liveness analysis.</p><p>Implement basic-block-level liveness analysis</p><h2 class=blog-header>Commits 28-31</h2><p>Add Mem2Reg Pass.</p><p>Also, some small additions/changes.</p><h2 class=blog-header>Commits 32-34</h2><p>Passes for Control Flow Graph Creation and Visualization.</p><h2 class=blog-header>Commits 35-37</h2><p>Pass for PhiElim(aka Static Single Assignment(SSA) Deconstruction).</p><h2 class=blog-header>Commit 38</h2><p>Dead Code Elimination(DCE) Pass.</p><h2 class=blog-header>Commit 39</h2><p>Sparse Simple Constant Propagation(SSCP) Pass.</p><h2 class=blog-header>Commit 40</h2><p>JBIR Generation.</p><h2 class=blog-header>Commit 41</h2><p>Global Value Numbering(GVN) Pass.</p><h2 class=blog-header>Commit 42</h2><p>Peephole Pass.</p><h2 class=blog-header>Commits 43-44</h2><p>Loop-Invariant Code Motion(LICM) Pass.</p><h2 class=blog-header>Commits 45-47</h2><p>Inlining Pass.</p><p>CFG Cleanup Pass.</p><h2 class=blog-header>Commits 48-49</h2><p>Pass Management.</p><h2 class=blog-header>Commits 50-51</h2><p>Instruction Encoding for x86_64.</p><h2 class=blog-header>Commits 52-54</h2><p>Array Support.</p><p>Escape Sequences.</p><p>Taking inspiration from the example program on Day 15 of <a class=link href=https://www.sigbus.info/how-i-wrote-a-self-hosting-c-compiler-in-40-days#day15>Rui's C Compiler Blog Post</a> I created the code below for solving the <a class=link href=https://en.wikipedia.org/wiki/Eight_queens_puzzle>Eight Queens Puzzle</a>.</p><p>I took special care to make sure it avoids unimplemented features, there's a few obvious workarounds that you may be able to see. However, even then, there's still some minor issue preventing it from working. After a few iterations it ends up crashing. That means there's still more work to do then! <pre><code>#include &lt;stdbool.h&gt;
+</script><p>NOTE: This is still a Work In Progress... At the moment this is mostly just an outline.</p><p>Continuing on with the commit log I started in <a class=link href=jcc_p1.html>Part 1</a>.</p><p>I also wrote an entire detailed report on topics learned while making these commits <a class=link href=/res/final_report.pdf>here</a>, but this will be much more approachable.</p><h2 class=blog-header>Commits 26-27</h2><p>Big Backend Refactor, especially for x86_64:</p><ul><li><p>Merge returns and fix prolog/epilog in x86_64</p></li><li><p>Start following windows ABI more closely for x86_64 backend</p></li><li><p>Start using State(def/use/kill) for machine instruction operands</p></li><li><p>Implemented br, brz, brnz in x86_64 and interp backends</p></li><li><p>Add "id" IROp.</p></li><li><p>Minor fixes for module-wide regalloc</p></li></ul><p>One of the major goals for the whole backend refactor over the past few commits was delaying register allocation until later in the pipeline. So now, instead of register allocation being done on JBIR and before generating MCIR, now it is done before Machine Code Generation. </p><figure><img class=blog-image src=jcc_p2_flow_chart.png><figcaption>New Pipeline</figcaption></figure><p>Also added liveness analysis.</p><p>Implemented basic-block-level liveness analysis.</p><p>Example C code:</p><pre><code>int main () {
+  int x = 17;
+  int y = 6;
+  int z = 0;
+  if ( y &lt; x )
+    z = x + y ;
+  return z + x ;
+}
+</pre></code><p>Equivalent JBIR:</p><pre><code>[ win64 ]
+fn main() %0:i32
+entry:
+  %1 = id 17.i32
+  %2 = id 6.i32
+  %3 = id 0.i32
+  %4 = lt %2, %3
+  brz %4 then cont
+then:
+  %5 = iadd %1, %2
+  br cont
+cont:
+  %6 = phi [entry, %3], [then, %5]
+  %7 = iadd %6, %1
+  ret %7
+</pre></code><p>Liveness analysis results:</p><pre><code>entry:
+  livein:
+  liveout: 3 1 2
+then:
+  livein: 1 2
+  liveout: 5 1 3
+cont:
+  livein: 1 3 5
+  liveout:
+</pre></code><h2 class=blog-header>Commits 28-31</h2><p>Add Mem2Reg Pass.</p><p>Original JBIR:</p><pre><code>fn main() %0:i32
+entry:
+%1 = slot i32
+stack_store %1, 100.i8
+brnz 1.i32 first second
+first:
+br last
+second:
+stack_store %1, 42. i8
+br last
+last:
+%4 = stack_load %1 i32
+ret %4
+</pre></code><p>JBIR after Mem2Reg:</p><pre><code>fn main() %0:i32
+entry:
+noop
+%1000 = id 100.i8
+brnz 1.i32 first second
+first:
+br last
+second:
+%1001 = id 42.i8
+br last
+last:
+%4 = phi [first, %1000], [second, %1001]
+ret %4
+</pre></code><p>Also, some small additions/changes.</p><h2 class=blog-header>Commits 32-34</h2><p>Passes for Control Flow Graph Creation and Visualization.</p><p>(TODO: Insert example image here)</p><h2 class=blog-header>Commits 35-37</h2><p>Pass for PhiElim(aka Static Single Assignment(SSA) Deconstruction).</p><p>Original JBIR:</p><pre><code>fn main() %0: i32
+b1:
+%1 = id 0.i32
+br b2
+b2:
+%2 = phi [b1, %1], [b2, %3]
+%3 = iadd %2, 1.i8
+%4 = id 5.i32
+%5 = lt %2, %4
+brnz %5 b2 b3
+b3:
+ret %2
+</pre></code><figure><img class=blog-image src=jcc_p2_phi_elim.png><figcaption>Phi Elim</figcaption></figure><p>After PhiElim, notice how a critical edge is necessarily broken so code can be generated correctly.</p><pre><code>fn main() %0: i32
+b1:
+%1 = id 0.i32
+%302 = mov %1
+br b2
+crit_0:
+%302 = mov %3
+br b2
+b2:
+%2 = mov %302
+%3 = iadd %2, 1.i8
+%4 = id 5. i32
+%5 = lt %2, %4
+brnz %5 crit_0 b3
+b3:
+ret %2
+</pre></code><figure><img class=blog-image src=jcc_p2_post_phi_elim.png><figcaption>After PhiElim</figcaption></figure><p>Notice how there's an extra edge from <em>b2</em> to itself in the diagram though. This just means I left a dead edge in some data structure somewhere. I never would have noticed this if I didn't spend time making this visualization.</p><h2 class=blog-header>Commit 38</h2><p>Dead Code Elimination(DCE) Pass.</p><p>the entry node for this function is <em>b1</em>, so the <em>b2</em> block is dead, there’s no possible way to reach it during normal program flow.</p><figure><img class=blog-image src=jcc_p2_before_dce.png><figcaption>Before DCE</figcaption></figure><p>Notice how <em>b2</em> is no longer present.</p><figure><img class=blog-image src=jcc_p2_after_dce.png><figcaption>After DCE</figcaption></figure><h2 class=blog-header>Commit 39</h2><p>Sparse Simple Constant Propagation(SSCP) Pass.</p><figure><img class=blog-image src=jcc_p2_before_sscp.png><figcaption>Before SSCP</figcaption></figure><figure><img class=blog-image src=jcc_p2_after_sscp.png><figcaption>After SSCP</figcaption></figure><figure><img class=blog-image src=jcc_p2_after_dce_2.png><figcaption>After DCE</figcaption></figure><h2 class=blog-header>Commit 40</h2><p>JBIR Generation.</p><pre><code>int main () {
+  int a = 0;
+  for (int i = 0; i &lt; 10; i ++) {
+    if (i % 2 == 0)
+      a += i;
+    else
+      a -= 1;
+  }
+  return a ;
+}
+</pre></code><figure><img class=blog-image src=jcc_p2_generated_jbir.png><figcaption>Generated JBIR</figcaption></figure><h2 class=blog-header>Commit 41</h2><p>Global Value Numbering(GVN) Pass.</p><h2 class=blog-header>Commit 42</h2><p>Peephole Pass.</p><figure><img class=blog-image src=jcc_p2_original_jbir.png><figcaption>Original JBIR</figcaption></figure><figure><img class=blog-image src=jcc_p2_after_sscp_42.png><figcaption>After SSCP Pass</figcaption></figure><figure><img class=blog-image src=jcc_p2_after_peephole.png><figcaption>After Peephole Pass</figcaption></figure><h2 class=blog-header>Commits 43-44</h2><p>Loop-Invariant Code Motion(LICM) Pass.</p><pre><code>int main () {
+  int a = 0, b = 0;
+  int c1 = 15 , c2 = 5;
+  for (int i = 0; i &lt; 10; ++i) {
+    a += i;
+    b = c1 + c2;
+  }
+  return a + b;
+}
+</pre></code><figure><img class=blog-image src=jcc_p2_before_licm.png><figcaption>Before LICM</figcaption></figure><p>If the loop condition is always false the loop-invariant code pulled into the entry block would never</p><p>have executed previously, but now it does. This is not correct.</p><figure><img class=blog-image src=jcc_p2_after_licm_incorrect.png><figcaption>After LICM</figcaption></figure><figure><img class=blog-image src=jcc_p2_after_licm_correct.png><figcaption>After LICM</figcaption></figure><h2 class=blog-header>Commits 45-47</h2><p>Inlining Pass.</p><p>CFG Cleanup Pass.</p><pre><code>int add (int lhs, int rhs ) {
+  return lhs + rhs;
+}
+int main () {
+  return add (3 , 39);
+}
+</pre></code><figure><img class=blog-image src=jcc_p2_before_inlining.png><figcaption>Before Inlining</figcaption></figure><figure><img class=blog-image src=jcc_p2_after_inlining.png><figcaption>After Inlining</figcaption></figure><p>After running a cleanup pass then SSCP it simplifies down to a single constant.</p><figure><img class=blog-image src=jcc_p2_after_cleanup_and_sscp.png><figcaption>After Cleanup and SSCP</figcaption></figure><h2 class=blog-header>Commits 48-49</h2><p>Pass Management.</p><p>Previously I was manually running passes until a fixed point for specific pieces of code to test.</p><p>Here is an example of the new pass management code.</p><pre><code>bool changed;
+do {
+  changed = false;
+  changed |= SSCP::run_pass(f);
+  CreateCFG::run_pass(f);
+  CFGViz::run_pass(f);
+
+  changed |= DCE::run_pass(f);
+  CreateCFG::run_pass(f);
+  CFGViz::run_pass(f);
+
+  changed |= Cleanup::run_pass(f);
+  CreateCFG::run_pass (f);
+  CFGViz::run_pass(f);
+} while(changed);
+</pre></code><h2 class=blog-header>Commits 50-51</h2><p>Instruction Encoding for x86_64.</p><figure><img class=blog-image src=jcc_p2_jbir_inst_table.png><figcaption>JBIR Instruction Table</figcaption></figure><h2 class=blog-header>Commits 52-54</h2><p>Array Support.</p><p>Escape Sequences.</p><p>Taking inspiration from the example program on Day 15 of <a class=link href=https://www.sigbus.info/how-i-wrote-a-self-hosting-c-compiler-in-40-days#day15>Rui's C Compiler Blog Post</a> I created the code below for solving the <a class=link href=https://en.wikipedia.org/wiki/Eight_queens_puzzle>Eight Queens Puzzle</a>.</p><p>I took special care to make sure it avoids unimplemented features, there's a few obvious workarounds that you may be able to see. However, even then, there's still some minor issue preventing it from working. After a few iterations it ends up crashing. That means there's still more work to do then! <pre><code>#include &lt;stdbool.h&gt;
 extern int printf(char*);
 
 void print_board(int *board) {
