@@ -106,16 +106,17 @@ code {
 }
 
 .portfolio-container .jumbotron:hover {
-	cursor: pointer;
-	transition: all 1s linear;
+	/* cursor: pointer; */
+	/* transition: all 1s linear; */
 	box-shadow: 25px 25px 25px black;
-	outline: 1px solid yellow;
+	/* outline: 1px solid yellow; */
 	text-decoration: none !important;
 	background-color: #272727;
 }
 
-.portfolio-container .jumbotron .display-5 {
-	text-decoration: underline;
+.portfolio-container .jumbotron .title {
+	/* text-decoration: underline; */
+	font-weight: bold;
 	padding-bottom: 30px;
 }
 
@@ -123,12 +124,53 @@ code {
 	margin-bottom: 0px;
 }
 
-.blog-button {
+.blog-button-container {
+	height: min-content;
 	float: right;
 	background-color: #333333;
 	padding: 10px;
 	border-radius: 5px;
 	box-shadow: 1px 1px 1px black;
+}
+
+@media (max-width: 768px) {
+	.blog-button-container {
+		width: min-content;
+		height: min-content;
+		float: right;
+		background-color: #333333;
+		padding: 10px;
+		border-radius: 5px;
+		box-shadow: 1px 1px 1px black;
+	}
+}
+
+.blog-button-icon {
+	fill: white;
+	width: 24.5px;
+	height: 24px;	
+	margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .blog-button-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+.blog-button-icon:hover {
+	fill: yellow;
+}
+
+.blog-button-icon-last {
+	fill: white;
+	width: 24.5px;
+	height: 24px;	
+}
+
+.blog-button-icon-last:hover {
+	fill: yellow;
 }
 
 .blog-container {

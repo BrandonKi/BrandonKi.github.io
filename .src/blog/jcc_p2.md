@@ -200,7 +200,7 @@ int main () {
     else
       a -= 1;
   }
-  return a ;
+  return a;
 }
 ```
 ![Generated JBIR](jcc_p2_generated_jbir.png)

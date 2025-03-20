@@ -33,11 +33,11 @@ In this case, my appetite for risk is extremely low, especially since there are 
 
 To simplifiy calcuations, I'll be assuming a flat $5.1\\%$ annual return over 15 months(April 2023 to July 2024). Realistically, it's slightly higher, but it won't signifcantly affect the outcome.
 
-![3 Month T Bill Rate](TBillRate.png)
+![3 Month T Bill Rate](cc_arb_t_bill_rate.png)
 
 Another option, assuming I was willing to take on some risk, would have been to put the money in [VOO](https://finance.yahoo.com/quote/VOO/) instead, which tracks the S&P 500. Over the same 15-month period, VOO has seen returns of about $33\\%$. Remember though, this involves some added risk, so it's not exactly "free money".
 
-![VOO](voo.png)
+![VOO](cc_arb_voo.png)
 
 ## Arbitrage
 
