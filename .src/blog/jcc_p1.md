@@ -17,7 +17,7 @@ Well, that's a good question. Honestly, the real reason is I randomly decided on
 
 Anyways, let's get into the interesting stuff.
 
-## Commits 1-2
+## Commits 1-2: Expression Parsing
 
 The plan is to have two backends, a custom backend([JB](https://github.com/BrandonKi/jcc/tree/main/jb)) and an [LLVM](https://llvm.org/) backend. As a result the first things I did was pull in the code for JB, which was a small project I worked on previously, and set up LLVM.
 
@@ -38,7 +38,7 @@ int main() {
 }
 ```
 
-## Commits 3-5
+## Commits 3-5: Functions & Pointers
 
 Progress has been pretty quick. I implemented function calls, pointers, and all the various compound assignment operators.
 
@@ -60,7 +60,7 @@ int main() {
 }
 ```
 
-## Commit 6
+## Commit 6: Strings & Types
 
 Up until this point only `int` has been supported, but I started laying the groundwork for the other builtin types and type checking. Parsing types in C is... not fun, as you all probably know, but not as bad as C++.
 
@@ -81,7 +81,7 @@ int main() {
 }
 ```
 
-## Commits 7-11
+## Commits 7-11: Control Flow
 
 A lot of progress was made. Here's the major features that were added:
 
@@ -107,7 +107,7 @@ int main() {
 }
 ```
 
-## Commits 12-13
+## Commits 12-13: Type System
 
 I finally decided to start working on semantic analysis and type checking. This meant I had to actually make pointers work correctly instead of the hacks I was doing before.
 
@@ -127,7 +127,7 @@ int main() {
 }
 ```
 
-## Commits 14-16
+## Commits 14-16: Debug Tools
 
 In this project, I took an approach of being very liberal with asserts. Rather than allowing the program to continue in an invalid state, I crash early and often. This approach has saved me a lot of debugging time, since each assert gives a reason for the failing as well.
 Although, one issue is, even with asserts, the root cause of the bug is often some arbitrary amount of code prior to where the assert fires. Luckily, this is a compiler, and it's single threaded, so just running the same input again should almost always exibit the incorrect behavior again. However, this can be made even easier if asserts simply printed out a stacktrace, so I created an Internal Compiler Error(ICE) macro.[^1] It is functionally equivalent to an assert, but prints a proper stacktrace.
@@ -170,7 +170,7 @@ default:
 
 Lastly, I made progress on the C preprocessor implementation, but only basic functionality. Since it's not fully detailed in the spec, for correctness, it's partially based on this [pdf](https://www.spinellis.gr/blog/20060626/cpp.algo.pdf).
 
-## Commits 17-19
+## Commits 17-19: Backend Work
 
 The focus of these few commits has just been refactoring the custom backend(JB).
 
@@ -182,7 +182,7 @@ The focus of these few commits has just been refactoring the custom backend(JB).
 - Added "stack slots", so values can be used normally from the stack now
 - Completely reworked x86\_64 codegen to be more like a macro assembler
 
-## Commits 20-22
+## Commits 20-22: Preprocessor
 
 Frontend Progress.
 
@@ -212,7 +212,7 @@ int main() {
 }
 ```
 
-## Commits 23-25
+## Commits 23-25: Features & Fixes
 
 More Frontend Progress!
 
@@ -255,3 +255,4 @@ int main() {
 ## Footnotes
 
 [^1]: A small explanation since I was confused for the reason behind this terminology the first time I saw it. It's commonly referred to as an Internal Compiler Error(ICE) rather than just an error because reporting errors is part of the core functionality of a compiler. In order to remove ambiguity most compilers call this situation an ICE, especially when communicating that an error occurred to the end user, so they know the issue wasn't in their code.
+

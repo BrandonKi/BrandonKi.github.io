@@ -14,11 +14,11 @@ Continuing on with the commit log I started in [Part 1](jcc_p1.html).
 I also wrote an entire detailed report on topics learned while making these commits [here](/res/final_report.pdf), but this will be much more approachable.
 
 
-## Commits 26-27: Backend Refactoring and Control Flow
+## Commits 26-27: Backend Refactoring
 
 <!-- These commits represent a major restructuring of the compiler's backend, particularly focusing on the x86\_64 target. The main goal was to improve the register allocation by moving it later in the compilation pipeline. This change allows for better optimization opportunities before registers are assigned. -->
 
-Key improvements included:
+The main improvements were:
 - Better handling of function returns and proper setup/cleanup code (prolog/epilog) in x86\_64
 - Stricter adherence to the Windows x86\_64 ABI for better compatibility
 - Introduction of State tracking for machine instructions to model register definitions, uses, and kills
@@ -76,7 +76,7 @@ cont:
   liveout:
 ```
 
-## Commits 28-31: Memory to Register Promotion
+## Commits 28-31: Mem2Reg
 
 The Mem2Reg pass is a crucial optimization that promotes stack-allocated variables to registers where possible. This transformation is particularly important because:
 - It reduces memory access operations which are slower than register operations
@@ -279,7 +279,7 @@ correct.
 ![After LICM](jcc_p2_after_licm_correct.png)
 
 
-## Commits 45-47: Function Inlining and Cleanup
+## Commits 45-47: Function Inlining
 
 These commits implement function inlining, which replaces function calls with the actual function body. The example shows how:
 - Simple function calls can be completely eliminated
@@ -344,7 +344,7 @@ This work focuses on the final stage of compilation where JBIR instructions are 
 
 ![JBIR Instruction Table](jcc_p2_jbir_inst_table.png)
 
-## Commits 52-54: Language Feature Expansion
+## Commits 52-54: Arrays & Strings
 
 These final commits add support for arrays and string escape sequences, demonstrated through an implementation of the Eight Queens Puzzle. While the implementation isn't yet perfect, it showcases:
 - Array handling capabilities
