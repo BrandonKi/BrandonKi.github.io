@@ -3,10 +3,16 @@ from pathlib import Path
 from datetime import datetime
 import os
 
-import htmlmin  # Being lazy for right now
+from minify_html import minify as m # Being lazy for right now
 
 MINIFY = True
 # MINIFY = False
+
+def minify(src):
+    if MINIFY:
+        return m(src, minify_js=True, minify_css=True)
+    else:
+        return src
 
 articles = []
 
@@ -20,9 +26,6 @@ def main():
         print('\t(usually you want to run this: py gensite.py . ..)')
         sys.exit(-1)
 
-    if MINIFY:
-        m = htmlmin.Minifier(remove_comments=True, remove_all_empty_space=True)
-
     in_directory = Path(sys.argv[1])
     out_directory = Path(sys.argv[2])
     blog_out_directory = Path(sys.argv[2]) / 'blog'
@@ -34,7 +37,7 @@ def main():
     blog_tags_out_directory.mkdir(exist_ok=True)
     css_out_directory.mkdir(exist_ok=True)
 
-    template = open(in_directory / 'templates' / 'template.html').read()
+    template = open(in_directory / 'templates' / 'template.html', encoding="utf-8").read()
     
     global articles
 
@@ -43,10 +46,8 @@ def main():
     for file in md_files:
         output = convert2html(file)
         articles[-1]['filename'] = file.stem
-        with open(Path(out_directory / 'blog' / file.stem).with_suffix('.html'), "w") as outfile:
-            # if MINIFY: output = m.minify(output)
-            if MINIFY: output = m.minify(template.replace('{{Content}}', output))
-            else: output = template.replace('{{Content}}', output)
+        with open(Path(out_directory / 'blog' / file.stem).with_suffix('.html'), "w", encoding="utf-8") as outfile:
+            output = minify(template.replace('{{Content}}', output))
             outfile.write(output)
     
     articles = sorted(articles, key=lambda x: x['date'], reverse=True)
@@ -57,8 +58,8 @@ def main():
     # Main html
     html_files = in_directory.glob('*.html')
     for file in html_files:
-        with open(file, "r") as infile:
-            with open(Path(out_directory / file.stem).with_suffix('.html'), "w") as outfile:
+        with open(file, "r", encoding="utf-8") as infile:
+            with open(Path(out_directory / file.stem).with_suffix('.html'), "w", encoding="utf-8") as outfile:
                 if file.stem == 'index':
                     output = infile.read()
                 else:
@@ -77,13 +78,13 @@ def main():
                         result += '</div></div>'
 
                     output = template.replace('{{Content}}', result)
-                if MINIFY: output = m.minify(output)
+                output = minify(output)
                 outfile.write(output)
 
     # Make the tag pages
     # NOTE: duplicated code from above ^^
     for dt in deduped_tags:
-        with open(Path(blog_tags_out_directory / dt).with_suffix('.html'), "w") as outfile:
+        with open(Path(blog_tags_out_directory / dt).with_suffix('.html'), "w", encoding="utf-8") as outfile:
             result = blog_copy
             result += f'Filter:&nbsp<a href="../../blog" class="blog-tag">&nbsp{dt} <div class="blog-tag-x">X</div>&nbsp</a>'
             for a in articles:
@@ -94,16 +95,16 @@ def main():
                     result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
             result += '</div></div>'
             output = template.replace('{{Content}}', result)
-            if MINIFY: output = m.minify(output)
+            output = minify(output)
             outfile.write(output)
 
     # Copy css
     css_files = (in_directory / 'css').glob('*.css')
     for file in css_files:
-        with open(file, "r") as output:
-            with open(Path(out_directory / 'css' / file.stem).with_suffix('.css'), "w") as outfile:
+        with open(file, "r", encoding="utf-8") as output:
+            with open(Path(out_directory / 'css' / file.stem).with_suffix('.css'), "w", encoding="utf-8") as outfile:
                 output = output.read()
-                if MINIFY: output = m.minify(output)
+                output = minify(output)
                 outfile.write(output)
 
     # Copy images
@@ -143,6 +144,19 @@ def convert2html(filename: str) -> None:
         });
     });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.blog-header').forEach(element => {
+        element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
+        element.addEventListener('click', () => {
+            const url = "#" + element.id;
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+</script>
 """
 
     in_meta = False
@@ -157,7 +171,7 @@ def convert2html(filename: str) -> None:
 
     tags = {'p': False, 'em': False, 'code': False, 'pre': False, 'ul': False, 'li': False, 'ol': False}
 
-    file = open(filename, "r")
+    file = open(filename, "r", encoding="utf-8")
     for raw_line in file:
         line = raw_line.lstrip()
         if line.rstrip() == '---':
@@ -183,16 +197,20 @@ def convert2html(filename: str) -> None:
         elif len(line.strip()) == 0:
             output += '\n'
         elif line.startswith('```'):
-            t = 'pre'
-            output += f'<{'/' if tags[t] else ''}{t}>'
-            tags[t] = not tags[t]
-            t = 'code'
+            if in_bulleted_list:    # HACK, temp fix
+               output += f'<{'/' if tags['ul'] else ''}{'ul'}>' 
+               
+            if tags['pre'] and tags['code']:
+                ts = ['code', 'pre']
+            else:
+                ts = ['pre', 'code']
+            for t in ts:
+                output += f'<{'/' if tags[t] else ''}{t}>'
+                tags[t] = not tags[t]
             # language = line[line.find('```')+3:].strip()
             # if len(language) > 0:
             #     language = f'class="language-{language}"'
             # output += f'<{'/' if tags[t] else ''}{t}{language if not tags[t] else ''}>'
-            output += f'<{'/' if tags[t] else ''}{t}>'
-            tags[t] = not tags[t]
             in_code_block = not in_code_block
         else:
             first_char = line[0]

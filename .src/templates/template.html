@@ -3,49 +3,41 @@
 <head>
 	<meta charset=utf-8>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="home" content="Personal website for Brandon Kirincich.">
+	<meta name="description" content="Personal website for Brandon Kirincich.">
 
     <style>html{background:#333;}</style>
 
 	<link rel="icon" href="data:,">
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="preload" as="font"> -->
-	<link rel="stylesheet" href="/css/style.css"> 
+
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/css/style.css" as="style">
+    <link rel="preload" href="/css/blog.css" as="style">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/blog.css">
 	<!-- local -->
     <!-- <link rel="stylesheet" href="./css/style.css"> 
 	<link rel="stylesheet" href="./css/blog.css"> -->
 
+
 	<title>Brandon Kirincich</title>
-    <link rel="prerender" href="/portfolio">
-    <link rel="prerender" href="/blog">
+    <!-- <link rel="prefetch" href="/portfolio">
+    <link rel="prefetch" href="/blog"> -->
     <!-- this is a page most people won't visit --> 
     <!-- <link rel="prefetch" href="/resources"> -->
-    <link rel="prerender" href="/contact">
+    <!-- <link rel="prefetch" href="/contact"> -->
 </head>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NQ24QK0N6C"></script>
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-NQ24QK0N6C"></script>
 <script defer>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-NQ24QK0N6C');
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.blog-header').forEach(element => {
-        element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
-        element.addEventListener('click', () => {
-            const url = "#" + element.id;
-            if (url) {
-                window.location.href = url;
-            }
-        });
-    });
-});
-</script>
+</script> -->
 
 <body>
     <div style="position:sticky;" class="d-md-none col-md-12 col-sm-12 col-12">
@@ -90,19 +82,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="row justify-content-end">
                     <div class="col" style="padding-right: 30px; border-right: thick solid yellow">
                         <div class="row justify-content-end">
-                            <h3><a class="chill-link" href="/home">Home</a></h2>
+                            <h3><a class="chill-link" href="/home">Home</a></h3>
                         </div>
                         <div class="row justify-content-end">
-                            <h3><a class="chill-link" href="/portfolio">Portfolio</a></h2>
+                            <h3><a class="chill-link" href="/portfolio">Portfolio</a></h3>
                         </div>
                         <div class="row justify-content-end">
-                            <h3><a class="chill-link" href="/blog">Blog</a></h2>
+                            <h3><a class="chill-link" href="/blog">Blog</a></h3>
                         </div>
                         <div class="row justify-content-end">
-                            <h3><a class="chill-link" href="/resources">Resources</a></h2>
+                            <h3><a class="chill-link" href="/resources">Resources</a></h3>
                         </div>
                         <div class="row justify-content-end">
-                            <h3><a class="chill-link" href="/contact">Contact</a></h2>
+                            <h3><a class="chill-link" href="/contact">Contact</a></h3>
                         </div>
                     </div>
                 </div>
