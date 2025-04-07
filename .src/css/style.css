@@ -27,10 +27,15 @@ body {
 	background: #5379C4CC !important;
 }
 
-h1 {
+.page-title {
 	/* font-size: 4vw; */
-	font-weight: bold;
 	margin-bottom: 0px;
+}
+
+.top-level-nav {
+	font-size: 1.75rem;
+	font-weight: 500;
+	line-height: 1.2;
 }
 
 code {
@@ -183,6 +188,10 @@ code {
 	max-width: 650px;
 	/* font-size: 105%; */
 	/* line-height: 1.9; */
+}
+
+.tag-icon:hover path {
+	fill:yellow;
 }
 
 .resources-container {
