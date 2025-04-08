@@ -1,0 +1,172 @@
+---
+title: Neural Network in Factorio (MNIST)
+description: ''
+author: Brandon Kirincich
+date: 2025-3-24
+tags:
+  - AI
+  - ML
+  - Factorio
+---
+
+Full goal is MNIST
+
+train in python, manually enter weights/biases into factorio
+will probably automatically generate them in the future
+
+starting with XOR
+
+nn architecture image/diagram
+
+remove final layer sigmoid activation, explain why it's possible
+
+multiply weights/biases by 1000 (can briefly touch on forms of quantization)
+
+explain XOR Factorio image/blueprint
+
+insert image, and provide a collapsible copy widget for the string
+0eNrlm22P4jYQgP9K5Y+tudqeyRtS+xOuUj9VWq1QAN9dpBBoCNeeVvz3ztiwsGzCbXy9lhDtl2H8MjMPtscv7JOYlzu7qYuqEdMnUSzW1VZMH57EtvhY5SXrqnxlxVTkddF8WtmmWEwW69W8qPJmXYu9FEW1tH+Lqd7LllbcX5NXTXsbs3+UwlZN0RTWm3Ufvsyq3Wpua+pUXutIis16S23XFVuk/ibZu0iKLySk7yIysyxqu/Dl2kjuo6nX5WxuP+WfC+qAWm19he1LmTw5hiXFh6JsbH2pPfi1tM6zeueaTjZlXlWWXftzl5cUClWp1vWKoLD91SavnetT8YtT7Ji7AUz3j/S3Z4YXCExPBMkgEajO+EFeH4Etg8DHn1zGj+3hn7qdUfGyeGbxoai3zezVkO4Il2xtuWT5usVu87HOl/a86npjiYJzS/xIMax3zWbXvKFpKyMMZRSPh1HUm1HyfcdRS8RdcLpxnjP66ZsZxedzulja+jog7Afo0OcFnfNPD31gvVhKfhWcSnz0HQnsNYL2BScJzTnR3eScNBQBDgnBREM3giw07Q4MQaahk4FWoXkFxpNXtA6FZEYEyYRmXxhP9tUQlH7hvtKvxn4rrzouvG+dTrew7oLJ4u5lN+pHADoJ3HTqoQ2I7mYQ910wzPgW1dNOdUusy0mZrzYt64TG4wDRDk4bjkVRL3ZFM7NVPi/tUkwpUiuf1c+I+q2ox+FLs/T1gtEaUt+dp4avx/ato/0ysH/pYkNnobtsPah5TieN7sstFcpADeqwlSZRNwMdetRQwxoHVyGYwKyvBpT1JwjxlYteCESgB4QgQtMNAANzvhpPzjdRICM9Ika99474fRnd4FnTJH0ZJf8Xo9MmUiulXoL4+QqILpTtPNI37aXT/2Qn3T0Iem+oTdbzjKBu/YgAKvSIoG7zhNB9CIbQq8URJUQwgYxGlBABAm9f1XgSImDI5au6r7tXiMKOIIM6hBnQWfeSG3jvOKYVN/SBHIZ0XaHjpPukCqEP5OZubq0g9IEchvU+fm0YYOj7OI7op2mhe9hoRIxCX8dxPPszDHocx/vanyEG5p14oKmXwP1FTrOxBy21BKkf5YMhKXISSJJTaZyIpGQJqThxxUjFoA7KY3FEUuykmCTtxZTaaOUaZSwaJ5LmuX+SkfVOZl905uvokxGST3UMy+Blds5485rdI6uuLUUhzUFmb4z3RidcJ/X6lPvXXs8yeltGMQ/tgTg2BzhMx6CXgWWPyjgYhMHLz7ZMdCbHXCf2dZw/idcnLHsOhvmAR8VhS/DxOhm9n8AcwMcO7A/4WMCc6ZkJ+eNk5gCeA7APNNvZB2AOeLDFdtF/L8jfBXq7yLGjjxf1mZ5tIduiQVQ0dkWD7PS/DlKU+dzSHBR//Pb7D+/fk+IzDWo3N6LYZJhlURTpFGPc7/8BPvrOXg==
+
+
+next, try simple nn on MNIST and report accuracy:
+  784 -> 128 -> 10
+  784 -> 64 -> 10
+
+however, the pixel input is grayscale, lamps in factorio are either on or off(1/0)
+so need to binarize inputs
+mention loss in accuracy, for ex. 96.84% -> 96.51%
+
+also, 784 is a lot if inputs, will need to do a 1x784 * 784x128 matrix multiplication
+try downscaling to a few resolutions,
+28x28: 96.51%
+24x24: 95.72%
+20x20: 95.62%
+16x16: 94.17%
+12x12: 89.78%
+8x8: 70.61%
+
+going to 12x12 causes some continuity issues,
+for example data item 0 of the training set, the 5 gets disconnected
+
+can show the same image in 8x8 just for fun...
+
+tldr will go with 16x16
+
+can go a step further and remove a 1-pixel border on the 16x16 images as well.
+This is fine because most of the time the edges of the image don't have useful stuff anyway.
+Also, this will bring the input image size from 16x16 to 14x14, which is a reduction from 256 to 196 for the input layer size.
+14x14: 94.12%
+
+Also, try it with 12x12, so removing a 2 pixel border.
+12x12: 94.22%
+10x10: 93.66%
+8x8: 91.22%
+
+I also had another idea! I can try to get rid of the corner pixels, even removing 4 pixels would be a win in my book.
+Digits should almost always not occupy these pixels anyway.
+However, unfortuantely, because I already cropped the images so much, now the digits are often pressed against the edges.
+
+(If I was reading, I would think why not use conv layers??, explain they are too complicated)
+New technique inspired partially by Local Binary Patterns (LBP).
+slide a 3x3 window over the image with a stride of 3, and convert each one to a single number/feature.
+a sum over the window will not preserve position information, instead what if each pixel corresponds to a binary position
+the max value will be 9 1's in binary since the image has been binarized, which represents the number 511,
+and the max value a signal can be is 2,147,483,647(2^31-1), so I have plenty of leeway.
+for some reason the second approach did not work well... use sum instead
+
+2x2 window(sum): 91.14% 
+2x2 window:
+
+used 0 for padding
+
+3x3 window: 
+4x4 window: 
+
+also have to play with the bottleneck layer size
+64:
+32:
+16:
+8: (LOSSY) 84.71%
+4:
+
+adding a second layer, making the network deeper
+same size as bottleneck layer for in/out
+
+
+## Matrix Multiplication Issue
+now, the real challenge, actually implementing it in factorio
+
+matrix multiplication issue, it's not very efficient
+go back to the XOR example, for each neuron on the left, a multiply must be added for each nueron on the right
+
+talk about MAC arrays, Multiply-accumulate array
+show visualization/image as well
+maybe even in factorio??
+will need a concept of cycles/clock for this though?? didn't need it before
+
+show 2x2 when going over MAC arrays, it's simple and can be used to explain
+2x2 matmul in factorio
+
+insert image, and provide a collapsible copy widget for the string
+[insert image and bp string here]
+
+can talk about splitting a 10x10 matmul into 4 5x5 matmuls
+this makes it easier since I'll just have to make 5x5 modules and can copy and paste
+
+go through a 2x2 * 2x2 example
+
+might need to also pick a bigger example as well because it will just be combining single numbers
+(so basically 4x4 * 4x4)
+
+tldr sicne I have a couple 10x10 layers, just need to get to 5x5 then copy and paste 
+### create an image carousel with the progression? that would be cool I think
+
+2x2 matmul
+[insert image and bp string here]
+
+3x3 matmul
+[insert image and bp string here]
+
+4x4 matmul
+[insert image and bp string here]
+
+8x8 matmul, using 4x4 modules
+blocked matrix multiplication
+C11 = A11B11+A12B21 
+C12 = A11B12+A12B22 
+C21 = A21B11+A22B21 
+C22 = A21B12+A22B22 
+C = C11 C12
+    C21 C22
+
+[insert image and bp string here]
+
+
+3x3 multi-cycle matmul
+[insert image and bp string here]
+
+
+
+
+
+### moving on
+wait... I think i can do a mux-type thing
+
+each row/col can be a different item
+
+since the selector can only sort by quantity in descending/ascending
+I can have a separate thing that sorts all the row/col items correctly
+so like, row/col 1 can be green, row/col 2 can be blue
+then I have signals going into the selector that are 1 green and 2 blue
+this will cause them to be sorted (green, blue), then I can iterate by setting the selector value
+(it will output 1 of the selected signal)
+then all the signals go into combinators for each input and I multiply by the item from the selector
+this will cause only the current row/col weights to be selected
+then I shove that into the MAC array inputs
+
+
+### Factorio blueprint
+
+generate factorio blueprint directly with weights/biases prepopulated???
+
+https://wiki.factorio.com/Blueprint_string_format
