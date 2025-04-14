@@ -53,6 +53,7 @@
 	background-color: #454545;
 	font-size: 85%;
 	font-family: monospace;
+	box-shadow: #121212 2px 2px;
 }
 
 .blog-tag:hover {
