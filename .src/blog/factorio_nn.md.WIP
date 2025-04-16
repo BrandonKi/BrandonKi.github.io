@@ -82,6 +82,8 @@ used 0 for padding
 3x3 window: 
 4x4 window: 
 
+talk about the binarize threshold at some point around here
+
 also have to play with the bottleneck layer size
 64:
 32:
@@ -142,13 +144,6 @@ C = C11 C12
 [insert image and bp string here]
 
 
-3x3 multi-cycle matmul
-[insert image and bp string here]
-
-
-
-
-
 ### moving on
 wait... I think i can do a mux-type thing
 
@@ -163,6 +158,32 @@ this will cause them to be sorted (green, blue), then I can iterate by setting t
 then all the signals go into combinators for each input and I multiply by the item from the selector
 this will cause only the current row/col weights to be selected
 then I shove that into the MAC array inputs
+
+
+3x3 multi-cycle matmul
+[insert image and bp string here]
+
+10x10 * 10x10 matmul
+[insert image and bp string]
+also explain, oops! I actually don't need this, overcomplicating things
+then show
+1x10 * 10x10
+
+based on this, then go into the new arch
+
+## new network archiecture, now that matmuls are actually easier than i thought
+
+## 1x25 * 25x20 matmul
+
+## 1x20 * 20x15 matmul
+
+## 1x15 * 15x10 matmul
+
+## removing bias
+
+test bias vs no bias
+seems like same results, so might as well not use bias
+simplifies the inference operation, 3 less additions that need to be done in factorio
 
 
 ### Factorio blueprint
