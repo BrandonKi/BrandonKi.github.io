@@ -355,6 +355,11 @@ document.addEventListener('DOMContentLoaded', () => {
         output += f'&nbsp<a class="link" style="font-family: monospace;" href="#backref{backref}">&#x21A9;</a>'
         backref = None
 
+    for k, v in tags.items():
+        if v and k in ('p', 'h1', 'h2', 'h3', 'h4', 'li', 'ol'):
+            output += f'<{'/' if tags[k] else ''}{k}>'
+            tags[k] = False
+
     meta_prefix = f'<div class="blog-content"><header><h1 class="blog-title">{meta['title']}</h1></header><p class="blog-meta">{
         meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body">'
     meta_suffix = '</div></div>'
