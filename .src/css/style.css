@@ -136,6 +136,12 @@ code {
 	padding: 10px;
 	border-radius: 5px;
 	box-shadow: 1px 1px 1px black;
+
+	/* .no-select */
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 }
 
 @media (max-width: 768px) {
@@ -264,4 +270,11 @@ code {
 
 .rss-sticky-button:hover .rss-link {
     transform: translateX(0);
+}
+
+.no-select {
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 }
