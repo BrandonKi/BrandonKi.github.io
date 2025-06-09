@@ -1,4 +1,62 @@
-<!doctype html><html lang=en style=background:#333><meta charset=utf-8><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><meta content="Personal website for Brandon Kirincich." name=description><style>html{background:#333}</style><link href=data:, rel=icon><link as=style crossorigin href=https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css rel=preload><link as=style href=/css/style.css rel=preload><link as=style href=/css/blog.css rel=preload><link crossorigin href=https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css rel=stylesheet><link href=/css/style.css rel=stylesheet><link href=/css/blog.css rel=stylesheet><title>Brandon Kirincich</title><body><div class="d-md-none col-md-12 col-sm-12 col-12" style=position:sticky><div class="row justify-content-end" style=top:0><div class=col><div class="row justify-content-center"><h3><a class=chill-link href=/home>Home</a></h3>   <h4 style=color:#ff0>|</h4>   <h3><a class=chill-link href=/portfolio>Portfolio</a></h3>   <h4 style=color:#ff0>|</h4>   <h3><a class=chill-link href=/blog>Blog</a></h3>   <h4 style=color:#ff0>|</h4>   <h3><a class=chill-link href=/reading>Reading</a></h3>   <h4 style=color:#ff0>|</h4>   <h3><a class=chill-link href=/contact>Contact</a></h3></div></div></div></div><div class="container-fluid page-content-container"><div class=row><div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"></div><div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center"><div class=blog-content><header><h1 class=blog-title>Static Site Generator Abomination</h1></header><p class=blog-meta>Brandon Kirincich - September 27, 2024<div class=blog-body><link href=../third_party/gruvbox-dark-soft.min.css rel=stylesheet><script rel=preload src=../third_party/highlight.min.js></script><script rel=preload src=../third_party/highlightjs-copy.min.js></script><link href=../third_party/highlightjs-copy.min.css rel=stylesheet><script>hljs.addPlugin(new CopyButtonPlugin());hljs.highlightAll()</script><link href=../third_party/katex.min.css rel=stylesheet><script rel=preload src=../third_party/katex.min.js></script><script rel=preload src=../third_party/auto-render.min.js></script><script>document.addEventListener(`DOMContentLoaded`,(()=>{renderMathInElement(document.body,{delimiters:[{left:`\$\$`,right:`\$\$`,display:!0},{left:`\$`,right:`\$`,display:!1},{left:`\\(`,right:`\\)`,display:!1},{left:`\\[`,right:`\\]`,display:!0}],throwOnError:!1})}))</script><script>document.addEventListener(`DOMContentLoaded`,()=>{document.querySelectorAll(`.blog-header`).forEach(a=>{a.id=encodeURI(a.textContent.trim().toLowerCase().replace(/ /g,`-`));a.addEventListener(`click`,()=>{const b=`#`+ a.id;b&&(window.location.href=b)})})})</script><p>I originally built this website using Go and hosted it on Google Cloud, but I decided to switch things up and save some money. Now, it's a simple static site hosted on GitHub Pages.<p>However, using an existing Static Site Generator(<a class=link href=https://en.wikipedia.org/wiki/Static_site_generator>SSG</a>) like <a class=link href=https://jekyllrb.com/>Jekyll</a> or <a class=link href=https://gohugo.io/>Hugo</a> would be no fun, so I decided to make my own from scratch.<p>Additionally, rather than creating another run-of-the-mill, typical SSG, I decided to challenge myself—just for fun.<ul><li><p>Single-pass Markdown parsing and HTML generation<li><p>Less than 300 lines of normal, non-code-golfed Python<li><p>No external libraries or packages<li><p>Enough features to write high-quality (debatable) blog posts</ul><p>The result was a ~225 lines of code (LOC) "<a class=link href=https://github.com/BrandonKi/BrandonKi.github.io/blob/main/.src/gensite.py>abomination</a>", with the core of it being the convert2html function.<p>That function, while only ~170 LOC, lexes and parses markdown while simultaneously generating the corresponding HTML. It uses what essentially became a state machine with almost no lookahead.<p>This led me to discover a surprisingly useful pattern (for this project at least, and probably nothing else!).<h4 class=blog-header>Single-Pass Generation, Without Lookahead</h4><p>In Markdown, "keywords" are just normal characters, and their special significance ("keywordness") depends on context. This concept isn't unique to Markdown—many programming languages have similar behaviors. For example, in C++, you can name a variable "final" even though it has a special meaning in certain contexts. Most languages use fully-featured lexers and parsers, but I’ve done enough of that. Why not try something more interesting?<p>In Markdown, characters like "#" and "-" are used to create headers or lists, but they may do nothing if they appear in certain contexts. To complicate things further, surrounding text with parentheses or brackets could mean it's part of a link or image (which requires special handling), or it might just be regular text. It’s not just about characters being "consumed" later; sometimes entire portions of text are involved.<p>Since I was generating HTML while parsing and couldn’t go back to revise already output HTML, I had to come up with a system.<p>Anything that may may have it's meaning changed by a later character has to be saved.<p>TODO<h4 class=blog-header>Example</h4><p>I wouldn’t recommend doing this for any serious project, but here’s a small snippet of what the resulting code looks like. The "no-lookahead" rule I imposed on myself was just an extra mini-challenge for fun.<pre><code>unconsumed_sup = False
+<div class="blog-content"><header><h1 class="blog-title"> Static Site Generator Abomination
+</h1></header><p class="blog-meta"> Brandon Kirincich
+ - September 27, 2024</p><div class="blog-body">
+<link rel="stylesheet" href="../third_party/gruvbox-dark-soft.min.css">
+<script rel="preload" src="../third_party/highlight.min.js"></script>
+<script rel="preload" src="../third_party/highlightjs-copy.min.js"></script>
+<link rel="stylesheet" href="../third_party/highlightjs-copy.min.css">
+<script>
+    hljs.addPlugin(new CopyButtonPlugin());
+    hljs.highlightAll();
+</script>
+
+<link rel="stylesheet" href="../third_party/katex.min.css">
+<script rel="preload" src="../third_party/katex.min.js"></script>
+<script rel="preload" src="../third_party/auto-render.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError : false
+        });
+    });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.blog-header').forEach(element => {
+        element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
+        element.addEventListener('click', () => {
+            const url = "#" + element.id;
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+</script>
+
+<p>I originally built this website using Go and hosted it on Google Cloud, but I decided to switch things up and save some money. Now, it's a simple static site hosted on GitHub Pages.</p>
+<p>However, using an existing Static Site Generator(<a class="link" href="https://en.wikipedia.org/wiki/Static_site_generator">SSG</a>) like <a class="link" href="https://jekyllrb.com/">Jekyll</a> or <a class="link" href="https://gohugo.io/">Hugo</a> would be no fun, so I decided to make my own from scratch.</p>
+<p>Additionally, rather than creating another run-of-the-mill, typical SSG, I decided to challenge myself—just for fun.</p>
+<ul><li><p>Single-pass Markdown parsing and HTML generation</p></li><li><p>Less than 300 lines of normal, non-code-golfed Python</p></li><li><p>No external libraries or packages</p></li><li><p>Enough features to write high-quality (debatable) blog posts</p></li>
+</ul><p>The result was a ~225 lines of code (LOC) "<a class="link" href="https://github.com/BrandonKi/BrandonKi.github.io/blob/main/.src/gensite.py">abomination</a>", with the core of it being the convert2html function.</p>
+<p>That function, while only ~170 LOC, lexes and parses markdown while simultaneously generating the corresponding HTML. It uses what essentially became a state machine with almost no lookahead.</p>
+<p>This led me to discover a surprisingly useful pattern (for this project at least, and probably nothing else!).</p>
+<h4 class="blog-header">Single-Pass Generation, Without Lookahead</h4>
+<p>In Markdown, "keywords" are just normal characters, and their special significance ("keywordness") depends on context. This concept isn't unique to Markdown—many programming languages have similar behaviors. For example, in C++, you can name a variable "final" even though it has a special meaning in certain contexts. Most languages use fully-featured lexers and parsers, but I’ve done enough of that. Why not try something more interesting?</p>
+<p>In Markdown, characters like "#" and "-" are used to create headers or lists, but they may do nothing if they appear in certain contexts. To complicate things further, surrounding text with parentheses or brackets could mean it's part of a link or image (which requires special handling), or it might just be regular text. It’s not just about characters being "consumed" later; sometimes entire portions of text are involved.</p>
+<p>Since I was generating HTML while parsing and couldn’t go back to revise already output HTML, I had to come up with a system.</p>
+<p>Anything that may may have it's meaning changed by a later character has to be saved. </p>
+<p>TODO</p>
+
+<h4 class="blog-header">Example</h4>
+<p>I wouldn’t recommend doing this for any serious project, but here’s a small snippet of what the resulting code looks like. The "no-lookahead" rule I imposed on myself was just an extra mini-challenge for fun.</p>
+<pre><code>unconsumed_sup = False
 unconsumed_bang = False
 unconsumed_link = False
 in_link = False
@@ -11,20 +69,22 @@ for c in line:
         unconsumed_sup = True
     # some uninteresting elifs here were elided for readability
     elif unconsumed_link and unconsumed_sup:
-        output += f'&lt;sup>&lt;a class="link" href="#footnote{saved_link}">{saved_link}&lt;/a>&lt;/sup>'
+        output += f'&lt;sup&gt;&lt;a class="link" href="#footnote{saved_link}"&gt;{saved_link}&lt;/a&gt;&lt;/sup&gt;'
         unconsumed_link = False
         unconsumed_sup = False
         saved_link = ""
     elif unconsumed_link and unconsumed_sup:
-        output += f'&lt;sup>&lt;a class="link" href="#footnote{saved_link}">{saved_link}&lt;/a>&lt;/sup>'
+        output += f'&lt;sup&gt;&lt;a class="link" href="#footnote{saved_link}"&gt;{saved_link}&lt;/a&gt;&lt;/sup&gt;'
         unconsumed_link = False
         unconsumed_sup = False
         saved_link = ""
     elif in_image and in_href and c == ')':
         in_image = False
         in_href = False
-        output += f'&lt;figure>&lt;img src="{saved_href}">&lt;figcaption>{saved_link}&lt;/figcaption>&lt;/figure>'
+        output += f'&lt;figure&gt;&lt;img src="{saved_href}"&gt;&lt;figcaption&gt;{saved_link}&lt;/figcaption&gt;&lt;/figure&gt;'
         saved_link = ""
         saved_href = ""
     # many more similar elif statements....
-</code></pre><p>I did end up using one external package for HTML minification, but it’s completely optional and doesn’t impact functionality. The resulting pages are so small that the minification has almost no effect on load time.<p>As an ending note, please don't ever seriously do this. :)</div></div></div><div class="d-none d-md-block col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0"><div class="row justify-content-end"><div style="border-right:thick solid #ff0;padding-right:30px" class=col><div class="row justify-content-end"><h1 class="top-level-nav fs-4"><a class=chill-link href=/home>Home</a></h1></div><div class="row justify-content-end"><h1 class="top-level-nav fs-4"><a class=chill-link href=/portfolio>Portfolio</a></h1></div><div class="row justify-content-end"><h1 class="top-level-nav fs-4"><a class=chill-link href=/blog>Blog</a></h1></div><div class="row justify-content-end"><h1 class="top-level-nav fs-4"><a class=chill-link href=/reading>Reading</a></h1></div><div class="row justify-content-end"><h1 class="top-level-nav fs-4"><a class=chill-link href=/contact>Contact</a></h1></div></div></div></div></div></div>
+</code></pre>
+<p>I did end up using one external package for HTML minification, but it’s completely optional and doesn’t impact functionality. The resulting pages are so small that the minification has almost no effect on load time.</p>
+<p>As an ending note, please don't ever seriously do this. :)</p></div></div>

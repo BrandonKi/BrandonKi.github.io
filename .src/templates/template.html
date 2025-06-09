@@ -44,23 +44,23 @@
         <div class="row justify-content-end" style="top:0px">
             <div class="col">
                 <div class="row justify-content-center">
-                    <h3><a class="chill-link" href="/home">Home</a></h3>
+                    <h3><a class="chill-link" href="/home" data-link>Home</a></h3>
                     &nbsp;
                     <h4 style="color:yellow;">|</h4>
                     &nbsp;
-                    <h3><a class="chill-link" href="/portfolio">Portfolio</a></h3>
+                    <h3><a class="chill-link" href="/portfolio" data-link>Portfolio</a></h3>
                     &nbsp;
                     <h4 style="color:yellow;">|</h4>
                     &nbsp;
-                    <h3><a class="chill-link" href="/blog">Blog</a></h3>
+                    <h3><a class="chill-link" href="/blog" data-link>Blog</a></h3>
                     &nbsp;
                     <h4 style="color:yellow;">|</h4>
                     &nbsp;                                    
-                    <h3><a class="chill-link" href="/reading">Reading</a></h3>
+                    <h3><a class="chill-link" href="/reading" data-link>Reading</a></h3>
                     &nbsp;
                     <h4 style="color:yellow;">|</h4>
                     &nbsp;
-                    <h3><a class="chill-link" href="/contact">Contact</a></h3>
+                    <h3><a class="chill-link" href="/contact" data-link>Contact</a></h3>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
 
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center">
 
-                {{Content}}
+                <div id="app"></div>
 
             </div>
 
@@ -82,19 +82,19 @@
                 <div class="row justify-content-end">
                     <div class="col" style="padding-right: 30px; border-right: thick solid yellow">
                         <div class="row justify-content-end">
-                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/home">Home</a></h1>
+                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/home" data-link>Home</a></h1>
                         </div>
                         <div class="row justify-content-end">
-                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/portfolio">Portfolio</a></h1>
+                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/portfolio" data-link>Portfolio</a></h1>
                         </div>
                         <div class="row justify-content-end">
-                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/blog">Blog</a></h1>
+                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/blog" data-link>Blog</a></h1>
                         </div>
                         <div class="row justify-content-end">
-                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/reading">Reading</a></h1>
+                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/reading" data-link>Reading</a></h1>
                         </div>
                         <div class="row justify-content-end">
-                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/contact">Contact</a></h1>
+                            <h1 class="top-level-nav fs-4"><a class="chill-link" href="/contact" data-link>Contact</a></h1>
                         </div>
                     </div>
                 </div>
@@ -124,3 +124,5 @@
 
         </div>
     </div>
+  <script src="app.js"></script>
+</body>

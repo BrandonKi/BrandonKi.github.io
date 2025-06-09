@@ -5,8 +5,8 @@ import os
 
 from minify_html import minify as m # Being lazy for right now
 
-MINIFY = True
-# MINIFY = False
+# MINIFY = True
+MINIFY = False
 
 def minify(src):
     if MINIFY:
@@ -47,7 +47,7 @@ def main():
         output = convert2html(file)
         articles[-1]['filename'] = file.stem
         with open(Path(out_directory / 'blog' / file.stem).with_suffix('.html'), "w", encoding="utf-8") as outfile:
-            output = minify(template.replace('{{Content}}', output))
+            # output = minify(template.replace('{{Content}}', output))
             outfile.write(output)
     
     articles = sorted(articles, key=lambda x: x['date'], reverse=True)
@@ -61,7 +61,7 @@ def main():
         with open(file, "r", encoding="utf-8") as infile:
             with open(Path(out_directory / file.stem).with_suffix('.html'), "w", encoding="utf-8") as outfile:
                 if file.stem == 'index':
-                    output = infile.read()
+                    result = infile.read()
                 else:
                     result = infile.read()
                     if file.stem == 'blog':
@@ -73,12 +73,13 @@ def main():
                                 tags = ''
                                 for t in a['tags']:
                                     deduped_tags.add(t)
-                                    tags += f'&nbsp<a href="/blog/tags/{t}" class="blog-tag">&nbsp{t}&nbsp</a>&nbsp'
-                                result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
+                                    tags += f'&nbsp<a href="/blog/tags/{t}" class="blog-tag" data-link>&nbsp{t}&nbsp</a>&nbsp'
+                                result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="/blog/{a['filename']}" data-link>{a['title']}</a>&nbsp{tags}</div></div>'
                         result += '</div></div>'
 
-                    output = template.replace('{{Content}}', result)
-                output = minify(output)
+                    # output = template.replace('{{Content}}', result)
+                # output = minify(output)
+                output = minify(result)
                 outfile.write(output)
 
     # Make the tag pages
@@ -86,16 +87,18 @@ def main():
     for dt in deduped_tags:
         with open(Path(blog_tags_out_directory / dt).with_suffix('.html'), "w", encoding="utf-8") as outfile:
             result = blog_copy
-            result += f'<svg class="tag-icon" width="18" height="18" viewBox="0 0 50 50"><path fill="white" stroke="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M47,5.5  C47,4.119,45.881,3,44.5,3c-0.156,0-14.876,0.002-14.876,0.002c-1.33,0-2.603-0.07-3.341,0.668L3.554,26.398  c-0.739,0.738-0.739,1.936,0,2.674l17.374,17.374c0.738,0.738,1.936,0.738,2.674,0L46.33,23.717c0.738-0.737,0.668-1.98,0.668-3.34  C46.998,20.377,47,5.656,47,5.5z"/><circle cx="39" cy="11" fill="#252525" r="3" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>Filter:&nbsp<a href="../../blog" class="blog-tag">&nbsp{dt} <div class="blog-tag-x">X</div>&nbsp</a>'
+            result += f'<svg class="tag-icon" width="18" height="18" viewBox="0 0 50 50"><path fill="white" stroke="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M47,5.5  C47,4.119,45.881,3,44.5,3c-0.156,0-14.876,0.002-14.876,0.002c-1.33,0-2.603-0.07-3.341,0.668L3.554,26.398  c-0.739,0.738-0.739,1.936,0,2.674l17.374,17.374c0.738,0.738,1.936,0.738,2.674,0L46.33,23.717c0.738-0.737,0.668-1.98,0.668-3.34  C46.998,20.377,47,5.656,47,5.5z"/><circle cx="39" cy="11" fill="#252525" r="3" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>Filter:&nbsp<a href="/blog" class="blog-tag" data-link>&nbsp{dt} <div class="blog-tag-x">X</div>&nbsp</a>'
             for a in articles:
                 if dt in a['tags']:
                     tags = ''
                     for t in a['tags']:
-                        tags += f'&nbsp<a href="../../blog/tags/{t}" class="blog-tag">&nbsp{t}&nbsp</a>&nbsp'
-                    result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
+                        tags += f'&nbsp<a href="../../blog/tags/{t}" class="blog-tag" data-link>&nbsp{t}&nbsp</a>&nbsp'
+                    result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="/blog/{a['filename']}" data-link>{a['title']}</a>&nbsp{tags}</div></div>'
             result += '</div></div>'
-            output = template.replace('{{Content}}', result)
-            output = minify(output)
+            # output = template.replace('{{Content}}', result)
+            # output = minify(output)
+            # outfile.write(output)
+            output = minify(result)
             outfile.write(output)
 
     # Copy css
