@@ -121,21 +121,45 @@ def main():
 # This is not a compliant markdown parser however.
 # It only accepts a nonstandard subset of markdown useful for making this website.
 def convert2html(filename: str) -> None:
-    output = """
-<link rel="stylesheet" href="../third_party/gruvbox-dark-soft.min.css">
-<script rel="preload" src="../third_party/highlight.min.js"></script>
-<script rel="preload" src="../third_party/highlightjs-copy.min.js"></script>
-<link rel="stylesheet" href="../third_party/highlightjs-copy.min.css">
+# <link rel="stylesheet" href="../third_party/gruvbox-dark-soft.min.css">
+# <link rel="stylesheet" href="../third_party/highlightjs-copy.min.css">
+# <link rel="stylesheet" href="../third_party/katex.min.css">
+# <script src="/third_party/highlight.min.js"></script>
+# <script src="/third_party/highlightjs-copy.min.js"></script>
+# <script src="/third_party/katex.min.js"></script>
+# <script src="/third_party/auto-render.min.js"></script>
+# <script>loadPageCSS("/third_party/gruvbox-dark-soft.min.css")</script>
+# <script>loadScript("/third_party/highlight.min.js")</script>
+# <script>loadScript("/third_party/highlightjs-copy.min.js")</script>
+# <script>loadPageCSS("/third_party/highlightjs-copy.min.css")</script>
+# <script>loadPageCSS("/third_party/katex.min.css")</script>
+# <script>loadScript("/third_party/katex.min.js")</script>
+# <script>loadScript("/third_party/auto-render.min.js");</script>
+    scripts = """
 <script>
-    hljs.addPlugin(new CopyButtonPlugin());
-    hljs.highlightAll();
-</script>
 
-<link rel="stylesheet" href="../third_party/katex.min.css">
-<script rel="preload" src="../third_party/katex.min.js"></script>
-<script rel="preload" src="../third_party/auto-render.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
+(async function () {
+
+
+
+
+    css_files = ["/third_party/gruvbox-dark-soft.min.css", "/third_party/highlightjs-copy.min.css", "/third_party/katex.min.css"];
+    js_files = ["/third_party/highlight.min.js", "/third_party/highlightjs-copy.min.js", "/third_party/katex.min.js", "/third_party/auto-render.min.js"];
+    
+    for (css_file of css_files) {
+        loadPageCSS(css_file);
+    }
+
+    for (js_file of js_files) {
+        // TODO load scripts in parallel
+        await loadScript(js_file);
+    }
+    // await loadScriptsInOrder(js_files);
+    
+    //document.addEventListener("DOMContentLoaded", function() {
+        console.log("starting to highlight and render math");
+        hljs.addPlugin(new CopyButtonPlugin());
+        hljs.highlightAll();
         renderMathInElement(document.body, {
           delimiters: [
               {left: '$$', right: '$$', display: true},
@@ -145,10 +169,9 @@ def convert2html(filename: str) -> None:
           ],
           throwOnError : false
         });
-    });
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+    //});
+
+    //document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.blog-header').forEach(element => {
         element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
         element.addEventListener('click', () => {
@@ -158,9 +181,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
+//});
+
+
+})();
+
 </script>
 """
+    output = ""
 
     in_meta = False
     meta = {}
@@ -363,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
             output += f'<{'/' if tags[k] else ''}{k}>'
             tags[k] = False
 
-    meta_prefix = f'<div class="blog-content"><header><h1 class="blog-title">{meta['title']}</h1></header><p class="blog-meta">{
+    meta_prefix = f'{scripts}<div class="blog-content"><header><h1 class="blog-title">{meta['title']}</h1></header><p class="blog-meta">{
         meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body">'
     meta_suffix = '</div></div>'
 

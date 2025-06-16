@@ -1,20 +1,28 @@
-<div class="blog-content"><header><h1 class="blog-title"> JCC: Making A C Compiler
-</h1></header><p class="blog-meta"> Brandon Kirincich
- - July 19, 2024</p><div class="blog-body">
-<link rel="stylesheet" href="../third_party/gruvbox-dark-soft.min.css">
-<script rel="preload" src="../third_party/highlight.min.js"></script>
-<script rel="preload" src="../third_party/highlightjs-copy.min.js"></script>
-<link rel="stylesheet" href="../third_party/highlightjs-copy.min.css">
-<script>
-    hljs.addPlugin(new CopyButtonPlugin());
-    hljs.highlightAll();
-</script>
 
-<link rel="stylesheet" href="../third_party/katex.min.css">
-<script rel="preload" src="../third_party/katex.min.js"></script>
-<script rel="preload" src="../third_party/auto-render.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+
+(async function () {
+
+
+
+
+    css_files = ["/third_party/gruvbox-dark-soft.min.css", "/third_party/highlightjs-copy.min.css", "/third_party/katex.min.css"];
+    js_files = ["/third_party/highlight.min.js", "/third_party/highlightjs-copy.min.js", "/third_party/katex.min.js", "/third_party/auto-render.min.js"];
+    
+    for (css_file of css_files) {
+        loadPageCSS(css_file);
+    }
+
+    for (js_file of js_files) {
+        // TODO load scripts in parallel
+        await loadScript(js_file);
+    }
+    // await loadScriptsInOrder(js_files);
+    
+    //document.addEventListener("DOMContentLoaded", function() {
+        console.log("starting to highlight and render math");
+        hljs.addPlugin(new CopyButtonPlugin());
+        hljs.highlightAll();
         renderMathInElement(document.body, {
           delimiters: [
               {left: '$$', right: '$$', display: true},
@@ -24,10 +32,9 @@
           ],
           throwOnError : false
         });
-    });
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+    //});
+
+    //document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.blog-header').forEach(element => {
         element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
         element.addEventListener('click', () => {
@@ -37,9 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
+//});
+
+
+})();
+
 </script>
-<p>I started working on a C compiler a little while ago called <a class="link" href="https://github.com/BrandonKi/jcc">JCC</a>, and this is log of my progress over time.</p>
+<div class="blog-content"><header><h1 class="blog-title"> JCC: Making A C Compiler
+</h1></header><p class="blog-meta"> Brandon Kirincich
+ - July 19, 2024</p><div class="blog-body"><p>I started working on a C compiler a little while ago called <a class="link" href="https://github.com/BrandonKi/jcc">JCC</a>, and this is log of my progress over time.</p>
 <p>First of all, you may be wondering:</p>
 <p><em>Why would you decide to make a C compiler?</em></p>
 <p>Well, that's a good question. Honestly, the real reason is I randomly decided one day I wanted to compile and play <a class="link" href="https://github.com/id-Software/DOOM">DOOM</a> using my own compiler. Yeah... that's pretty much the only reason.</p>

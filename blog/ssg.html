@@ -1,20 +1,28 @@
-<div class="blog-content"><header><h1 class="blog-title"> Static Site Generator Abomination
-</h1></header><p class="blog-meta"> Brandon Kirincich
- - September 27, 2024</p><div class="blog-body">
-<link rel="stylesheet" href="../third_party/gruvbox-dark-soft.min.css">
-<script rel="preload" src="../third_party/highlight.min.js"></script>
-<script rel="preload" src="../third_party/highlightjs-copy.min.js"></script>
-<link rel="stylesheet" href="../third_party/highlightjs-copy.min.css">
-<script>
-    hljs.addPlugin(new CopyButtonPlugin());
-    hljs.highlightAll();
-</script>
 
-<link rel="stylesheet" href="../third_party/katex.min.css">
-<script rel="preload" src="../third_party/katex.min.js"></script>
-<script rel="preload" src="../third_party/auto-render.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+
+(async function () {
+
+
+
+
+    css_files = ["/third_party/gruvbox-dark-soft.min.css", "/third_party/highlightjs-copy.min.css", "/third_party/katex.min.css"];
+    js_files = ["/third_party/highlight.min.js", "/third_party/highlightjs-copy.min.js", "/third_party/katex.min.js", "/third_party/auto-render.min.js"];
+    
+    for (css_file of css_files) {
+        loadPageCSS(css_file);
+    }
+
+    for (js_file of js_files) {
+        // TODO load scripts in parallel
+        await loadScript(js_file);
+    }
+    // await loadScriptsInOrder(js_files);
+    
+    //document.addEventListener("DOMContentLoaded", function() {
+        console.log("starting to highlight and render math");
+        hljs.addPlugin(new CopyButtonPlugin());
+        hljs.highlightAll();
         renderMathInElement(document.body, {
           delimiters: [
               {left: '$$', right: '$$', display: true},
@@ -24,10 +32,9 @@
           ],
           throwOnError : false
         });
-    });
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+    //});
+
+    //document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.blog-header').forEach(element => {
         element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
         element.addEventListener('click', () => {
@@ -37,9 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
-</script>
+//});
 
+
+})();
+
+</script>
+<div class="blog-content"><header><h1 class="blog-title"> Static Site Generator Abomination
+</h1></header><p class="blog-meta"> Brandon Kirincich
+ - September 27, 2024</p><div class="blog-body">
 <p>I originally built this website using Go and hosted it on Google Cloud, but I decided to switch things up and save some money. Now, it's a simple static site hosted on GitHub Pages.</p>
 <p>However, using an existing Static Site Generator(<a class="link" href="https://en.wikipedia.org/wiki/Static_site_generator">SSG</a>) like <a class="link" href="https://jekyllrb.com/">Jekyll</a> or <a class="link" href="https://gohugo.io/">Hugo</a> would be no fun, so I decided to make my own from scratch.</p>
 <p>Additionally, rather than creating another run-of-the-mill, typical SSG, I decided to challenge myself—just for fun.</p>

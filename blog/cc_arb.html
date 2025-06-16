@@ -1,20 +1,28 @@
-<div class="blog-content"><header><h1 class="blog-title"> Credit Card Arbitrage
-</h1></header><p class="blog-meta"> Brandon Kirincich
- - October 13, 2024</p><div class="blog-body">
-<link rel="stylesheet" href="../third_party/gruvbox-dark-soft.min.css">
-<script rel="preload" src="../third_party/highlight.min.js"></script>
-<script rel="preload" src="../third_party/highlightjs-copy.min.js"></script>
-<link rel="stylesheet" href="../third_party/highlightjs-copy.min.css">
-<script>
-    hljs.addPlugin(new CopyButtonPlugin());
-    hljs.highlightAll();
-</script>
 
-<link rel="stylesheet" href="../third_party/katex.min.css">
-<script rel="preload" src="../third_party/katex.min.js"></script>
-<script rel="preload" src="../third_party/auto-render.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+
+(async function () {
+
+
+
+
+    css_files = ["/third_party/gruvbox-dark-soft.min.css", "/third_party/highlightjs-copy.min.css", "/third_party/katex.min.css"];
+    js_files = ["/third_party/highlight.min.js", "/third_party/highlightjs-copy.min.js", "/third_party/katex.min.js", "/third_party/auto-render.min.js"];
+    
+    for (css_file of css_files) {
+        loadPageCSS(css_file);
+    }
+
+    for (js_file of js_files) {
+        // TODO load scripts in parallel
+        await loadScript(js_file);
+    }
+    // await loadScriptsInOrder(js_files);
+    
+    //document.addEventListener("DOMContentLoaded", function() {
+        console.log("starting to highlight and render math");
+        hljs.addPlugin(new CopyButtonPlugin());
+        hljs.highlightAll();
         renderMathInElement(document.body, {
           delimiters: [
               {left: '$$', right: '$$', display: true},
@@ -24,10 +32,9 @@
           ],
           throwOnError : false
         });
-    });
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+    //});
+
+    //document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.blog-header').forEach(element => {
         element.id = encodeURI(element.textContent.trim().toLowerCase().replace(/ /g, '-'));
         element.addEventListener('click', () => {
@@ -37,9 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
-</script>
+//});
 
+
+})();
+
+</script>
+<div class="blog-content"><header><h1 class="blog-title"> Credit Card Arbitrage
+</h1></header><p class="blog-meta"> Brandon Kirincich
+ - October 13, 2024</p><div class="blog-body">
 
 <p><!-- https://www.citi.com/credit-cards/citi-custom-cash-credit-card --></p>
 <p>I've been looking into new credit cards, and with the combination of $0\%$ APR introductory periods and bonuses for spending relatively small amounts of money, I saw a low-effort opportunity for arbitrage.</p>
