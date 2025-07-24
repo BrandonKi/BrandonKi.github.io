@@ -21,16 +21,16 @@ articles = []
 #   py gensite.py . ..
 def main():
     if len(sys.argv) < 3:
-        print('You forgot to tell me what directories to look at!!')
-        print('Usage:\n\tpy gensite.py path/to/input/mds path/to/output/htmls')
-        print('\t(usually you want to run this: py gensite.py . ..)')
-        sys.exit(-1)
+        script_directory = os.path.dirname(os.path.abspath(__file__))
+        in_directory = Path(script_directory)
+        out_directory = Path(script_directory) / '..'
+    else:
+        in_directory = Path(sys.argv[1])
+        out_directory = Path(sys.argv[2])
 
-    in_directory = Path(sys.argv[1])
-    out_directory = Path(sys.argv[2])
-    blog_out_directory = Path(sys.argv[2]) / 'blog'
-    blog_tags_out_directory = Path(sys.argv[2]) / 'blog' / 'tags'
-    css_out_directory = Path(sys.argv[2]) / 'css'
+    blog_out_directory = out_directory / 'blog'
+    blog_tags_out_directory = out_directory / 'blog' / 'tags'
+    css_out_directory = out_directory / 'css'
 
     out_directory.mkdir(exist_ok=True, parents=True)
     blog_out_directory.mkdir(exist_ok=True)
@@ -43,6 +43,7 @@ def main():
 
     # Convert blog markdown to html
     md_files = (in_directory / 'blog').glob('*.md')
+    md_files = [file for file in md_files if not file.name.startswith('.')] # hack for emacs
     for file in md_files:
         output = convert2html(file)
         articles[-1]['filename'] = file.stem
