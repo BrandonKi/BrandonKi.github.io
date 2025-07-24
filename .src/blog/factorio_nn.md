@@ -20,19 +20,33 @@ The full end goal is [MNIST](https://en.wikipedia.org/wiki/MNIST_database)(aka h
 Initially the plan is to train the neural network in Python then manually enter the weights/biases into factorio. After I'm sure it's feasible then the weights will probably be generated automatically instead.
 
 Anyway, back to XOR, this is a classic problem often used as a "[Hello, World!](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program)" problem for neural networks.
-XOR is a logic gate,
+XOR is a logic gate, for anyone that doesn't know already, the truth table is for XOR. If you've never encountered a truth table before, this is just showing the corresponding output given specific inputs. Tldr, XOR outputs 1 if one and only one of it's inputs is true.
 
-nn architecture image/diagram
+![Truth table for XOR](xor_truth_table.png)
+
+Now onto the neural network architecture for this function. First, starting with the obvious part, we will need two inputs and a single output. Then for the hidden layer, I will choose a size of four. The resulting network is below.
 
 ![xor neural network diagram](xor_nn.png)
 
+For the input and hidden layer I used the ReLU activation function. ReLU is a simple function, but it serves it's purpose, introducing non-linearity into the network. Non-linearity is what enables neural networks to learn complex patterns.
+
+$$f(x) = max(0, x)$$
+
+For the output layer it's common to use the sigmoid activation function for binary classification problem, which XOR is. Sigmoid's output is a value between 0 and 1, and can be interpreted as a probability. It's often defined by the following:
+
+$$\\sigma(x) = \\frac{1}{1+\e^{-x}}$$
+
 remove final layer sigmoid activation, explain why it's possible
 
-multiply weights/biases by 1000 (can briefly touch on forms of quantization)
+Additionally, since we don't care about the actual output probablities and just the final decision it's actually very simple to remove the sigmoid activation from the final layer during inference.
+
+![sigmoid graph](sigmoid_graph.png)
+
+can just check if the input (x) is greater than 0 and if so then output is 1 else 0
+
+multiply weights/biases by 1000 because factorio doesn't support floating point numbers (can briefly touch on forms of quantizatio as welln)
 
 explain XOR Factorio image/blueprint
-
-insert image, and provide a collapsible copy widget for the string
 
 ```
 0eNrlm22P4jYQgP9K5Y+tudqeyRtS+xOuUj9VWq1QAN9dpBBoCNeeVvz3ztiwsGzCbXy9lhDtl2H8MjMPtscv7JOYlzu7qYuqEdMnUSzW1VZMH57EtvhY5SXrqnxlxVTkddF8WtmmWEwW69W8qPJmXYu9FEW1tH+Lqd7LllbcX5NXTXsbs3+UwlZN0RTWm3Ufvsyq3Wpua+pUXutIis16S23XFVuk/ibZu0iKLySk7yIysyxqu/Dl2kjuo6nX5WxuP+WfC+qAWm19he1LmTw5hiXFh6JsbH2pPfi1tM6zeueaTjZlXlWWXftzl5cUClWp1vWKoLD91SavnetT8YtT7Ji7AUz3j/S3Z4YXCExPBMkgEajO+EFeH4Etg8DHn1zGj+3hn7qdUfGyeGbxoai3zezVkO4Il2xtuWT5usVu87HOl/a86npjiYJzS/xIMax3zWbXvKFpKyMMZRSPh1HUm1HyfcdRS8RdcLpxnjP66ZsZxedzulja+jog7Afo0OcFnfNPD31gvVhKfhWcSnz0HQnsNYL2BScJzTnR3eScNBQBDgnBREM3giw07Q4MQaahk4FWoXkFxpNXtA6FZEYEyYRmXxhP9tUQlH7hvtKvxn4rrzouvG+dTrew7oLJ4u5lN+pHADoJ3HTqoQ2I7mYQ910wzPgW1dNOdUusy0mZrzYt64TG4wDRDk4bjkVRL3ZFM7NVPi/tUkwpUiuf1c+I+q2ox+FLs/T1gtEaUt+dp4avx/ato/0ysH/pYkNnobtsPah5TieN7sstFcpADeqwlSZRNwMdetRQwxoHVyGYwKyvBpT1JwjxlYteCESgB4QgQtMNAANzvhpPzjdRICM9Ika99474fRnd4FnTJH0ZJf8Xo9MmUiulXoL4+QqILpTtPNI37aXT/2Qn3T0Iem+oTdbzjKBu/YgAKvSIoG7zhNB9CIbQq8URJUQwgYxGlBABAm9f1XgSImDI5au6r7tXiMKOIIM6hBnQWfeSG3jvOKYVN/SBHIZ0XaHjpPukCqEP5OZubq0g9IEchvU+fm0YYOj7OI7op2mhe9hoRIxCX8dxPPszDHocx/vanyEG5p14oKmXwP1FTrOxBy21BKkf5YMhKXISSJJTaZyIpGQJqThxxUjFoA7KY3FEUuykmCTtxZTaaOUaZSwaJ5LmuX+SkfVOZl905uvokxGST3UMy+Blds5485rdI6uuLUUhzUFmb4z3RidcJ/X6lPvXXs8yeltGMQ/tgTg2BzhMx6CXgWWPyjgYhMHLz7ZMdCbHXCf2dZw/idcnLHsOhvmAR8VhS/DxOhm9n8AcwMcO7A/4WMCc6ZkJ+eNk5gCeA7APNNvZB2AOeLDFdtF/L8jfBXq7yLGjjxf1mZ5tIduiQVQ0dkWD7PS/DlKU+dzSHBR//Pb7D+/fk+IzDWo3N6LYZJhlURTpFGPc7/8BPvrOXg==
@@ -40,9 +54,12 @@ insert image, and provide a collapsible copy widget for the string
 
 ![XOR neural network implemented in factorio](factorio_XOR.png)
 
-next, try simple nn on MNIST and report accuracy:
-  `784 -> 128 -> 10`
-  `784 -> 64 -> 10`
+next, try some simple nns on MNIST and report accuracy:
+
+```
+784 -> 128 -> 10:  
+784 -> 64 -> 10:  
+```
 
 however, the pixel input is grayscale, lamps in factorio are either on or off(1/0)
 so need to binarize inputs
