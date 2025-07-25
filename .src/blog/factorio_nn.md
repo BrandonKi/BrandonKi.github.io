@@ -17,56 +17,90 @@ For a more readable writeup take a look at my [reddit post](https://www.reddit.c
 
 The full end goal is [MNIST](https://en.wikipedia.org/wiki/MNIST_database)(aka handwritten digit recognition), but first I'll start with a simpler example as a proof of concept, [XOR](https://en.wikipedia.org/wiki/Exclusive_or).
 
-Initially the plan is to train the neural network in Python then manually enter the weights/biases into factorio. After I'm sure it's feasible then the weights will probably be generated automatically instead.
+Initially the plan is to train the neural network in Python then manually enter the weights/biases into Factorio. After I'm sure it's feasible, I will probably automatically generate the weights as an ingame blueprint instead.
 
-Anyway, back to XOR, this is a classic problem often used as a "[Hello, World!](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program)" problem for neural networks.
-XOR is a logic gate, for anyone that doesn't know already, the truth table is for XOR. If you've never encountered a truth table before, this is just showing the corresponding output given specific inputs. Tldr, XOR outputs 1 if one and only one of it's inputs is true.
+## XOR Neural Network
+
+This is a classic problem often used as a "[Hello, World!](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program)" problem for neural networks.
+XOR is a logic gate, for anyone that doesn't know already, this is the truth table is for XOR. If you've never encountered a truth table before, this is just showing the corresponding output given specific inputs. Tldr, XOR outputs $1$ if and only if one of it's inputs is true.
 
 ![Truth table for XOR](xor_truth_table.png)
+
+### Architecture
 
 Now onto the neural network architecture for this function. First, starting with the obvious part, we will need two inputs and a single output. Then for the hidden layer, I will choose a size of four. The resulting network is below.
 
 ![xor neural network diagram](xor_nn.png)
 
-For the input and hidden layer I used the ReLU activation function. ReLU is a simple function, but it serves it's purpose, introducing non-linearity into the network. Non-linearity is what enables neural networks to learn complex patterns.
+#### ReLU
+
+For the hidden layer I used the ReLU activation function. ReLU is a simple function, but it serves it's purpose, introducing non-linearity into the network. Non-linearity is what enables neural networks to learn complex patterns.
 
 $$f(x) = max(0, x)$$
+
+#### Sigmoid
 
 For the output layer it's common to use the sigmoid activation function for binary classification problem, which XOR is. Sigmoid's output is a value between 0 and 1, and can be interpreted as a probability. It's often defined by the following:
 
 $$\\sigma(x) = \\frac{1}{1+\e^{-x}}$$
 
-remove final layer sigmoid activation, explain why it's possible
+Additionally, since we don't care about the actual output probablities and just the final decision it's actually very simple to remove the sigmoid activation from the final layer during inference(however it is still needed during training for this to work).
 
-Additionally, since we don't care about the actual output probablities and just the final decision it's actually very simple to remove the sigmoid activation from the final layer during inference.
+Here's a graph of the sigmoid function.
 
 ![sigmoid graph](sigmoid_graph.png)
 
-can just check if the input (x) is greater than 0 and if so then output is 1 else 0
+As you can see, when the input(x coordinate) is $< 0$, then the output(y coordinate) is less than $0.5$. Also, remember we are treating this output as a probablity that the XOR result is equal to $1$. So if the output is $0.5$ then that essentially means "there is a 50% chance the result is $1$. So looking at the graph, we can actually see that at $x = 0$ is when the transition happens. If the output falls on the left of the y-axis then the XOR result is predicted to be $0$ and if the output is on the right of the y-axis, then the XOR result is predicted to be $1$. So instead of using the sigmoid function at inference-time, we can instead just check if the would-be sigmoid input is greater or less than $0$. This may seem like an insignificant side quest, but remember, anything we need to run during inference must be implemented in Factorio, and a simple comparison operation is much easier than the sigmoid formula above.
 
-multiply weights/biases by 1000 because factorio doesn't support floating point numbers (can briefly touch on forms of quantizatio as welln)
+So the formula on the left is replaced by the one on the right:
+
+$$y = \\sigma(x) = \\frac{1}{1+\e^{-x}} \\quad \\longrightarrow \\quad y = x > 0$$
+
+#### Quantization
+
+Additionally, another problem that I ran into is neural networks often use floating point numbers for weights/biases, and Factorio doesn't have floating point numbers($1.4, 2.5$), only integers are supported($1, 4, 7$). As a result, I need to figure out a way to translate floats to ints. This transformation is called [quantization](https://en.wikipedia.org/wiki/Quantization), and there are many different ways to do it. For this neural network I can just multiply all the weights and biases by $1000$ and round them to the nearest integer. This is a simple way to convert floating point numbers to integers, this is effectively throwing away all the other decimal places of precision and using just four of them though, so it's not ideal by any means. There are plenty of more advanced techniques[^1].
+
+multiply weights/biases by 1000 because factorio doesn't support floating point numbers (can briefly touch on forms of quantization as well)
 
 explain XOR Factorio image/blueprint
+
+Also, here is the Factorio blueprint string so you can import it into your own game, I will be providing blueprint strings in these boxes for the rest of the blog post. (Click the copy button in the top right!)
 
 ```
 0eNrlm22P4jYQgP9K5Y+tudqeyRtS+xOuUj9VWq1QAN9dpBBoCNeeVvz3ztiwsGzCbXy9lhDtl2H8MjMPtscv7JOYlzu7qYuqEdMnUSzW1VZMH57EtvhY5SXrqnxlxVTkddF8WtmmWEwW69W8qPJmXYu9FEW1tH+Lqd7LllbcX5NXTXsbs3+UwlZN0RTWm3Ufvsyq3Wpua+pUXutIis16S23XFVuk/ibZu0iKLySk7yIysyxqu/Dl2kjuo6nX5WxuP+WfC+qAWm19he1LmTw5hiXFh6JsbH2pPfi1tM6zeueaTjZlXlWWXftzl5cUClWp1vWKoLD91SavnetT8YtT7Ji7AUz3j/S3Z4YXCExPBMkgEajO+EFeH4Etg8DHn1zGj+3hn7qdUfGyeGbxoai3zezVkO4Il2xtuWT5usVu87HOl/a86npjiYJzS/xIMax3zWbXvKFpKyMMZRSPh1HUm1HyfcdRS8RdcLpxnjP66ZsZxedzulja+jog7Afo0OcFnfNPD31gvVhKfhWcSnz0HQnsNYL2BScJzTnR3eScNBQBDgnBREM3giw07Q4MQaahk4FWoXkFxpNXtA6FZEYEyYRmXxhP9tUQlH7hvtKvxn4rrzouvG+dTrew7oLJ4u5lN+pHADoJ3HTqoQ2I7mYQ910wzPgW1dNOdUusy0mZrzYt64TG4wDRDk4bjkVRL3ZFM7NVPi/tUkwpUiuf1c+I+q2ox+FLs/T1gtEaUt+dp4avx/ato/0ysH/pYkNnobtsPah5TieN7sstFcpADeqwlSZRNwMdetRQwxoHVyGYwKyvBpT1JwjxlYteCESgB4QgQtMNAANzvhpPzjdRICM9Ika99474fRnd4FnTJH0ZJf8Xo9MmUiulXoL4+QqILpTtPNI37aXT/2Qn3T0Iem+oTdbzjKBu/YgAKvSIoG7zhNB9CIbQq8URJUQwgYxGlBABAm9f1XgSImDI5au6r7tXiMKOIIM6hBnQWfeSG3jvOKYVN/SBHIZ0XaHjpPukCqEP5OZubq0g9IEchvU+fm0YYOj7OI7op2mhe9hoRIxCX8dxPPszDHocx/vanyEG5p14oKmXwP1FTrOxBy21BKkf5YMhKXISSJJTaZyIpGQJqThxxUjFoA7KY3FEUuykmCTtxZTaaOUaZSwaJ5LmuX+SkfVOZl905uvokxGST3UMy+Blds5485rdI6uuLUUhzUFmb4z3RidcJ/X6lPvXXs8yeltGMQ/tgTg2BzhMx6CXgWWPyjgYhMHLz7ZMdCbHXCf2dZw/idcnLHsOhvmAR8VhS/DxOhm9n8AcwMcO7A/4WMCc6ZkJ+eNk5gCeA7APNNvZB2AOeLDFdtF/L8jfBXq7yLGjjxf1mZ5tIduiQVQ0dkWD7PS/DlKU+dzSHBR//Pb7D+/fk+IzDWo3N6LYZJhlURTpFGPc7/8BPvrOXg==
 ```
 
+### Factorio XOR Implementation
+
 ![XOR neural network implemented in factorio](factorio_XOR.png)
 
-next, try some simple nns on MNIST and report accuracy:
+explain... label important parts...
+
+## MNIST Neural Network
+
+next, I'm ready to tackle the full problem...
+
+first try some simple nns on MNIST and report accuracy:
 
 ```
 784 -> 128 -> 10:  
 784 -> 64 -> 10:  
 ```
 
+### Binarize
+
 however, the pixel input is grayscale, lamps in factorio are either on or off(1/0)
 so need to binarize inputs
 mention loss in accuracy, for ex. `96.84% -> 96.51%`
 
-also, `784` is a lot if inputs, will need to do a `1x784 \* 784x128` matrix multiplication
-try downscaling to a few resolutions,
+
+### Reduce Input Size
+
+also, `784` is a lot if inputs, will need to do a `1x784 \* 784x128` matrix multiplication not easy in Factorio...
+
+#### Downscaling
+
+try downscaling to a few different resolutions,
 
 ```
 28x28: 96.51%
@@ -74,7 +108,7 @@ try downscaling to a few resolutions,
 20x20: 95.62%
 16x16: 94.17%
 12x12: 89.78%
-8x8: 70.61%
+8x8:   70.61%
 ```
 
 going to `12x12` causes some continuity issues,
@@ -83,6 +117,8 @@ for example data item 0 of the training set, the `5` gets disconnected
 can show the same image in `8x8` just for fun...
 
 tldr will go with `16x16`
+
+#### Removing Borders
 
 can go a step further and remove a 1-pixel border on the `16x16` images as well.
 This is fine because most of the time the edges of the image don't have useful stuff anyway.
@@ -96,11 +132,15 @@ Also, try it with `12x12`, so removing a `2` pixel border.
 8x8: 91.22%
 ```
 
+#### Removing Corner Pixels
+
 I also had another idea! I can try to get rid of the corner pixels, even removing 4 pixels would be a win in my book.
 Digits should almost always not occupy these pixels anyway.
 However, unfortuantely, because I already cropped the images so much, now the digits are often pressed against the edges.
 
-(If I was reading, I would think why not use conv layers??, explain they are too complicated)
+#### Other Approaches
+
+(If I was reading, I would think why not use conv layers?, explain they are too complicated)
 New technique inspired partially by Local Binary Patterns (LBP).
 slide a 3x3 window over the image with a stride of 3, and convert each one to a single number/feature.
 a sum over the window will not preserve position information, instead what if each pixel corresponds to a binary position
@@ -116,9 +156,19 @@ used 0 for padding
 3x3 window:
 4x4 window:
 
-talk about the binarize threshold at some point around here
+### Binarize Thresholds
 
-also have to play with the bottleneck layer size
+accuracy for each threshold...
+
+```
+0.2: 
+0.5: 
+0.8:  
+```
+
+#### Hidden Layer Size
+
+also have to play with the hidden layer size
 
 ```
 64:
@@ -127,6 +177,8 @@ also have to play with the bottleneck layer size
 8: (LOSSY) 84.71%
 4:
 ```
+
+#### Adding a Second Hidden Layer
 
 adding a second layer, making the network deeper
 same size as bottleneck layer for in/out
@@ -137,6 +189,8 @@ now, the real challenge, actually implementing it in factorio
 matrix multiplication issue, it's not very efficient
 go back to the XOR example, for each neuron on the left, a multiply must be added for each nueron on the right
 
+### MAC Array
+
 talk about MAC arrays, Multiply-accumulate array
 show visualization/image as well
 maybe even in factorio?
@@ -146,7 +200,7 @@ show 2x2 when going over MAC arrays, it's simple and can be used to explain
 2x2 matmul in factorio
 
 insert image, and provide a collapsible copy widget for the string
-[insert image and bp string here]
+(insert image and bp string here)
 
 can talk about splitting a 10x10 matmul into 4 5x5 matmuls
 this makes it easier since I'll just have to make 5x5 modules and can copy and paste
@@ -158,7 +212,9 @@ might need to also pick a bigger example as well because it will just be combini
 
 tldr since I have a couple `10x10` layers, just need to get to `5x5` then copy and paste
 
-### create an image carousel with the progression? that would be cool I think
+### Factorio Implementation Progression
+
+#### Single Cycle
 
 2x2 matmul
 
@@ -200,7 +256,7 @@ C = C11 C12
 
 ![8x8 matmul with 4x4 modules](matmul_4x4_modules.png)
 
-### moving on
+#### Multi Cycle
 
 wait... I think i can do a mux-type thing
 
@@ -242,44 +298,51 @@ then show
 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
 ```
 
-![1x10 \* 10x10 matmul](1x10_10x10_matmul.png)
+![1x10 by 10x10 matmul](1x10_10x10_matmul.png)
 
 based on this, then go into the new arch
 
-## new network archiecture, now that matmuls are actually easier than i thought
+new network archiecture, now that matmuls are actually easier than i thought
 
-## 1x25 \* 25x20 matmul
+1x25 \* 25x20 matmul
 
 ```
 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
 ```
 
-![1x25 \* 25x20 matmul](1x25_25x20_matmul.png)
+![1x25 by 25x20 matmul](1x25_25x20_matmul.png)
 
-## 1x20 \* 20x15 matmul
+1x20 \* 20x15 matmul
 
 ```
 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
 ```
-![1x20 \* 20x15 matmul](1x20_20x15_matmul.png)
+![1x20 by 20x15 matmul](1x20_20x15_matmul.png)
 
-## 1x15 \* 15x10 matmul
+1x15 \* 15x10 matmul
 
 ```
 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
 ```
 
-![1x15 \* 15x10 matmul](1x15_15x10_matmul.png)
+![1x15 by 15x10 matmul](1x15_15x10_matmul.png)
 
-## removing bias
+### Removing Bias
 
 test bias vs no bias
 like same results, so might as well not use bias
 simplifies the inference operation, 3 less additions that need to be done in factorio
 
 
-### Factorio blueprint
+### Factorio Blueprint Generation
 
 explain generating the factorio blueprint directly with weights/biases prepopulated
 
 [blueprint json format](https://wiki.factorio.com/Blueprint_string_format)
+
+
+### Footnotes
+
+[^1] [Hugging Face Quantization Guide](https://huggingface.co/docs/optimum/en/concept_guides/quantization)
+
+
