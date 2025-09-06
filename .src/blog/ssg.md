@@ -34,16 +34,15 @@ In Markdown, characters like "#" and "-" are used to create headers or lists, bu
 
 Since I was generating HTML while parsing and couldn’t go back to revise already output HTML, I had to come up with a system.
 
-Anything that may may have it's meaning changed by a later character has to be saved. 
+Anything that may may have it's meaning changed by a later character has to be saved.
 
 TODO
-
 
 #### Example
 
 I wouldn’t recommend doing this for any serious project, but here’s a small snippet of what the resulting code looks like. The "no-lookahead" rule I imposed on myself was just an extra mini-challenge for fun.
 
-```
+```python
 unconsumed_sup = False
 unconsumed_bang = False
 unconsumed_link = False

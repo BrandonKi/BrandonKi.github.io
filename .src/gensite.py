@@ -206,12 +206,13 @@ document.addEventListener('DOMContentLoaded', () => {
             else:
                 ts = ['pre', 'code']
             for t in ts:
-                output += f'<{'/' if tags[t] else ''}{t}>'
+                language = line[line.find('```')+3:].strip()
+                if t == 'code' and len(language) > 0:
+                    language = f' class="language-{language}"'
+                    output += f'<{'/' if tags[t] else ''}{t}{language if not tags[t] else ''}>'
+                else:
+                    output += f'<{'/' if tags[t] else ''}{t}>'
                 tags[t] = not tags[t]
-            # language = line[line.find('```')+3:].strip()
-            # if len(language) > 0:
-            #     language = f'class="language-{language}"'
-            # output += f'<{'/' if tags[t] else ''}{t}{language if not tags[t] else ''}>'
             in_code_block = not in_code_block
         else:
             first_char = line[0]

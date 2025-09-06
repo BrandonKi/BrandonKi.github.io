@@ -29,7 +29,7 @@ On the bright side at least codegen was pretty easy for this part since I'm savi
 
 Here's an example of something it can currently handle.
 
-```
+```c++
 int main() {
     int x = 10;
     int y = x * 2;
@@ -46,7 +46,7 @@ There's still more work to be done for all of these features but it's a solid st
 
 Here's an example of what currently works.
 
-```
+```c++
 int identity(int x) {
     int *y = &x;
     int z = *y;
@@ -70,7 +70,7 @@ Also, currently the compiler crashes whenever it encounters an error which isn't
 
 The major features I added this time were string literals, extern function, and char pointers. I can now run the classic [Hello World!](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program) program. During this I also realized my test runner can't check for correct STDOUT results yet, but that's a problem for future me. Anyways, here's another example of the new features in action.
 
-```
+```c++
 extern int printf(char *);
 extern void puts(char *);
 int main() {
@@ -92,7 +92,7 @@ A lot of progress was made. Here's the major features that were added:
 
 I also did a big cleanup pass over the existing code which was pretty easy since this project is still in it's early stages. Making an example to showcase all of these changes is too hard so here's a small one.
 
-```
+```c++
 int main() {
     int a = 0;
 
@@ -117,7 +117,7 @@ The other major features I added were `sizeof` and `\_Alignof`. These were prett
 
 As per usual here's an example with some of the new stuff.
 
-```
+```c++
 int main() {
     short a = 0;
     short b = 1;
@@ -132,7 +132,7 @@ int main() {
 In this project, I took an approach of being very liberal with asserts. Rather than allowing the program to continue in an invalid state, I crash early and often. This approach has saved me a lot of debugging time, since each assert gives a reason for the failing as well.
 Although, one issue is, even with asserts, the root cause of the bug is often some arbitrary amount of code prior to where the assert fires. Luckily, this is a compiler, and it's single threaded, so just running the same input again should almost always exibit the incorrect behavior again. However, this can be made even easier if asserts simply printed out a stacktrace, so I created an Internal Compiler Error(ICE) macro.[^1] It is functionally equivalent to an assert, but prints a proper stacktrace.
 
-There also some other easy debug features I can add as well. For example, simply printing out the current position being parsed in the file, and the last and next few tokens. 
+There also some other easy debug features I can add as well. For example, simply printing out the current position being parsed in the file, and the last and next few tokens.
 
 I recently started using [X Macros](https://en.wikipedia.org/wiki/X_macro). In compilers, it's common to define long enums that need to be reused across multiple contexts. Without X Macros, this often means copying and pasting the enum members, extra care must be taken to keep all of these pasted locations in sync though. With X Macros, I can avoid the duplication and ensure all these locations stay synchronized.
 
@@ -140,7 +140,7 @@ Additionally, X Macros allow me to associate extra information with each enum it
 
 Here’s an example from my lexer token definitions. I'm able to use the same token definitions in multiple different contexts without duplicating the over 100 entries.
 
-```
+```c++
 // Defining each entry in token_kinds.inc
 X(_inc, -58, "++")
 X(_dec, -59, "--")
@@ -194,7 +194,7 @@ Frontend Progress.
 
 Here's a small example.
 
-```
+```c++
 #include <stdbool.h>
 
 #define COND1
@@ -227,7 +227,7 @@ More Frontend Progress!
 
 Also, a small bug fix. Object-like macros starting with open paren now parse correctly, previously they would incorrectly be parsed as a function-like macro
 
-```
+```c++
 // object-like
 #define test (a)
 
@@ -237,7 +237,7 @@ Also, a small bug fix. Object-like macros starting with open paren now parse cor
 
 Code like this now works correctly!
 
-```
+```c++
 int main() {
     struct Pair {
         long long a;
@@ -251,8 +251,6 @@ int main() {
 }
 ```
 
-
 ## Footnotes
 
 [^1]: A small explanation since I was confused for the reason behind this terminology the first time I saw it. It's commonly referred to as an Internal Compiler Error(ICE) rather than just an error because reporting errors is part of the core functionality of a compiler. In order to remove ambiguity most compilers call this situation an ICE, especially when communicating that an error occurred to the end user, so they know the issue wasn't in their code.
-

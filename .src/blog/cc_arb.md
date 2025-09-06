@@ -16,6 +16,7 @@ I've been looking into new credit cards, and with the combination of $0\\%$ APR 
 It seems like free money right? So I decided to experiment a bit and see if it's actually worth it.
 
 Here are the terms for the card I was looking at:
+
 - $\\$25$K limit
 - $0\\%$ APR for 15 months
 - $\\$200$ after spending $\\$1500$
@@ -23,7 +24,6 @@ Here are the terms for the card I was looking at:
 - $5\\%$ cash back on top spending category, valid for the first $\\$500$ spent
 - $1\\%$ cash back for all other purchases
 - No annual fee
-
 
 ## Picking An Investment
 
@@ -45,7 +45,7 @@ Ok, now that I've picked where I'll be putting the money, lets see how to maximi
 
 The general strategy is to max out the card and, instead of paying it off, I would instead keep the money in 3 month treasury bills. Also, ideally I would try to maximize rewards and cash back at the same time.
 
-Step one is to max out the card. First of all, since I spent $\\$1,500$ I would get $\\$200$ right off the bat. Then from the cash back, I would get $5\\%$ back on the first $\\$500$ and $1\\%$ back on the remaining $\\$24,500$.[^2] 
+Step one is to max out the card. First of all, since I spent $\\$1,500$ I would get $\\$200$ right off the bat. Then from the cash back, I would get $5\\%$ back on the first $\\$500$ and $1\\%$ back on the remaining $\\$24,500$.[^2]
 
 This comes out to a total of $(0.05 \* \\$500) + (0.01 \* \\$24500) + \\$200 = \\$470$.
 
