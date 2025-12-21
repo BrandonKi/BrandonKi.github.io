@@ -6,7 +6,7 @@
 	<meta name="description" content="Personal website for Brandon Kirincich.">
 
     <style>html{background:#333;}</style>
-
+    
 	<link rel="icon" href="data:,">
 
 	<!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="preload" as="font"> -->
@@ -39,37 +39,37 @@
   gtag('config', 'G-NQ24QK0N6C');
 </script> -->
 
-<body>
-    <div style="position:sticky;" class="d-md-none col-md-12 col-sm-12 col-12">
-        <div class="row justify-content-end" style="top:0px">
-            <div class="col">
-                <div class="row justify-content-center">
-                    <h3><a class="chill-link" href="/home">Home</a></h3>
-                    &nbsp;
-                    <h4 style="color:yellow;">|</h4>
-                    &nbsp;
-                    <h3><a class="chill-link" href="/portfolio">Portfolio</a></h3>
-                    &nbsp;
-                    <h4 style="color:yellow;">|</h4>
-                    &nbsp;
-                    <h3><a class="chill-link" href="/blog">Blog</a></h3>
-                    &nbsp;
-                    <h4 style="color:yellow;">|</h4>
-                    &nbsp;                                    
-                    <h3><a class="chill-link" href="/reading">Reading</a></h3>
-                    &nbsp;
-                    <h4 style="color:yellow;">|</h4>
-                    &nbsp;
-                    <h3><a class="chill-link" href="/contact">Contact</a></h3>
-                </div>
-            </div>
+<body class="container-fluid">
+    <div class="col">
+    <div class="d-md-none" style="top:0px">
+        <div class="row justify-content-center">
+            <h3><a class="chill-link" href="/home">Home</a></h3>
+            &nbsp;
+            <h4 style="color:yellow;">|</h4>
+            &nbsp;
+            <h3><a class="chill-link" href="/portfolio">Portfolio</a></h3>
+            &nbsp;
+            <h4 style="color:yellow;">|</h4>
+            &nbsp;
+            <h3><a class="chill-link" href="/blog">Blog</a></h3>
+            &nbsp;
+            <h4 style="color:yellow;">|</h4>
+            &nbsp;                                    
+            <h3><a class="chill-link" href="/reading">Reading</a></h3>
+            &nbsp;
+            <h4 style="color:yellow;">|</h4>
+            &nbsp;
+            <h3><a class="chill-link" href="/contact">Contact</a></h3>
         </div>
     </div>
 
     <div class="container-fluid page-content-container">
         <div class="row">
 
-            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-0 col-0">
+            <div class="d-none d-md-block col-xl-2 col-lg-2 col-md-2">
+
+                {{Sidebar}}
+
             </div>
 
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 justify-content-center">
@@ -123,4 +123,5 @@
             </div> -->
 
         </div>
+    </div>
     </div>

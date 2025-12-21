@@ -38,6 +38,7 @@
 	margin-top: 3rem;
 	margin-bottom: 0.5rem;
 	font-weight: bold;
+	scroll-margin-top: 60px;
 }
 
 .blog-header:hover {
@@ -91,8 +92,15 @@ figcaption {
 }
 
 .blog-image {
-	max-width: 650px;
-	/* width: 100%; */
+    max-width: 650px;
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 650px) {
+    .blog-image {
+        max-width: 100%;
+    }
 }
 
 /* .blog-title {

@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 import os
+import re
 
 from minify_html import minify as m # Being lazy for right now
 
@@ -45,10 +46,11 @@ def main():
     md_files = (in_directory / 'blog').glob('*.md')
     md_files = [file for file in md_files if not file.name.startswith('.')] # hack for emacs
     for file in md_files:
-        output = convert2html(file)
+        html_output, article_sidebar = convert2html(file)
         articles[-1]['filename'] = file.stem
         with open(Path(out_directory / 'blog' / file.stem).with_suffix('.html'), "w", encoding="utf-8") as outfile:
-            output = minify(template.replace('{{Content}}', output))
+            partial_template = template.replace('{{Sidebar}}', article_sidebar)
+            output = minify(partial_template.replace('{{Content}}', html_output))
             outfile.write(output)
     
     articles = sorted(articles, key=lambda x: x['date'], reverse=True)
@@ -78,7 +80,8 @@ def main():
                                 result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
                         result += '</div></div>'
 
-                    output = template.replace('{{Content}}', result)
+                    output = template.replace('{{Sidebar}}', '')
+                    output = output.replace('{{Content}}', result)
                 output = minify(output)
                 outfile.write(output)
 
@@ -95,7 +98,8 @@ def main():
                         tags += f'&nbsp<a href="../../blog/tags/{t}" class="blog-tag">&nbsp{t}&nbsp</a>&nbsp'
                     result += f'<div style="margin-bottom: 0.5em"><div style="font-family: monospace;display:inline-block;font-size:90%;">{a['date'].strftime("%b %d, %Y")}&nbsp</div><div style="display:inline-block;"> &#x2014 <a class="link" href="blog/{a['filename']}.html">{a['title']}</a>&nbsp{tags}</div></div>'
             result += '</div></div>'
-            output = template.replace('{{Content}}', result)
+            output = template.replace('{{Sidebar}}', '')
+            output = output.replace('{{Content}}', result)
             output = minify(output)
             outfile.write(output)
 
@@ -158,7 +162,133 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    let tocLinks = document.querySelectorAll('#toc a');
+    if (tocLinks.length === 0) return;
+    const sections = document.querySelectorAll('.blog-body h1, .blog-body h2, .blog-body h3, .blog-body h4');
+
+    const visibleSections = new Set();
+    let userClicked = false;
+
+    const getTocLinkForId = (id) => {
+        try {
+            if (window.CSS && CSS.escape) {
+                return document.querySelector(`#toc a[href="#${CSS.escape(id)}"]`);
+            }
+        } catch (e) {
+        }
+        tocLinks = document.querySelectorAll('#toc a');
+        for (const a of tocLinks) {
+            if (a.getAttribute('href') === `#${id}`) return a;
+        }
+        return null;
+    };
+
+    const tocContainer = document.getElementById('toc');
+
+    const scrollSidebarTo = (link) => {
+        if (!tocContainer || !link) return;
+        try {
+            const top = link.offsetTop - (tocContainer.clientHeight / 2) + (link.offsetHeight / 2);
+            tocContainer.scrollTo({ top: top, behavior: 'smooth' });
+        } catch (e) {}
+    };
+
+    const observerCallback = (entries) => {
+        if (userClicked) return; // skip updating if user clicked
+
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                visibleSections.add(entry.target);
+            } else {
+                visibleSections.delete(entry.target);
+            }
+        });
+
+        if (visibleSections.size > 0) {
+            const lastSection = Array.from(visibleSections).reduce((a, b) =>
+                a.offsetTop > b.offsetTop ? a : b
+            );
+            tocLinks.forEach(link => link.classList.remove('active'));
+            const targetLink = getTocLinkForId(lastSection.id);
+            if (targetLink) {
+                targetLink.classList.add('active');
+                scrollSidebarTo(targetLink);
+            }
+        }
+    };
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '-50% 0px -50% 0px',
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach(section => {
+        if (section.id) observer.observe(section);
+    });
+
+    tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            userClicked = true;
+
+            tocLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            scrollSidebarTo(link);
+
+            const onScroll = () => {
+                userClicked = false;
+                window.removeEventListener('scroll', onScroll);
+            };
+            window.addEventListener('scroll', onScroll);
+        });
+    });
+});
+</script>
+<style>
+body {
+  display: flex;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+#toc {
+    position: sticky;
+    top: 20px;
+    height: 100vh;
+    overflow-y: auto;
+    flex: 0 0 200px;
+    padding: 0px 0px 20px 8px;
+    background: inherit;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+#toc::-webkit-scrollbar { width: 0; height: 0; }
+
+#toc a {
+    display: block;
+    margin: 5px 0;
+    color: #b9b9b9;
+    text-decoration: none;
+}
+
+#toc a.active {
+    font-weight: bold;
+    color: white;
+}
+
+#toc ul { list-style: none; margin: 0; padding-left: 0; }
+#toc li { margin: 4px 0; }
+#toc ul ul { padding-left: 1rem; }
+#toc a { display: inline-block; }
+</style>
 """
+    headings = []
 
     in_meta = False
     meta = {}
@@ -265,6 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 output += f'<h{cnt} class="blog-header">'
                 tags[f'h{cnt}'] = True
                 line = line[cnt:].lstrip()
+                headings.append((line.strip(), cnt))
             elif first_char not in ('`', '!'):
                 output += '<p>'
                 tags['p'] = True
@@ -362,14 +493,46 @@ document.addEventListener('DOMContentLoaded', () => {
             output += f'<{'/' if tags[k] else ''}{k}>'
             tags[k] = False
 
-    meta_prefix = f'<div class="blog-content"><header><h1 class="blog-title">{meta['title']}</h1></header><p class="blog-meta">{
-        meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body">'
+    meta_prefix = f'<div class="blog-content"><header><h1 class="blog-title">{meta['title']}</h1></header><p class="blog-meta">{meta['author']} - {meta['date'].strftime("%B %d, %Y")}</p><div class="blog-body">'
     meta_suffix = '</div></div>'
 
     articles.append(meta)
 
     file.close()
-    return meta_prefix + output + meta_suffix
+
+    def slugify(s: str) -> str:
+        s = s.strip().lower()
+        s = re.sub(r"\s+", "-", s)
+        s = re.sub(r"[^a-z0-9\-\:\.\&]", "", s)
+        s = re.sub(r"-+", "-", s)
+        return s
+
+    if len(headings) > 0:
+        root = {'level': 0, 'children': []}
+        stack = [root]
+        for text, level in headings:
+            node = {'level': level, 'text': text, 'id': slugify(text), 'children': []}
+            while stack and stack[-1]['level'] >= level:
+                stack.pop()
+            stack[-1]['children'].append(node)
+            stack.append(node)
+
+        def render_children(children):
+            parts = ['<ul>']
+            for child in children:
+                parts.append('<li>')
+                parts.append('<a href="#' + child['id'] + '">' + child['text'] + '</a>')
+                if child['children']:
+                    parts.append(render_children(child['children']))
+                parts.append('</li>')
+            parts.append('</ul>')
+            return ''.join(parts)
+
+        sidebar_html = '<nav id="toc">' + render_children(root['children']) + '</nav>'
+    else:
+        sidebar_html = ''
+
+    return meta_prefix + output + meta_suffix, sidebar_html
 
 
 if __name__ == '__main__':
