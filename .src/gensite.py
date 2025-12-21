@@ -247,6 +247,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+observerCallback(
+    sections.map(section => ({
+        target: section,
+        isIntersecting:
+            section.getBoundingClientRect().top < window.innerHeight / 2 &&
+            section.getBoundingClientRect().bottom > window.innerHeight / 2
+    }))
+);
+
 </script>
 <style>
 body {
@@ -503,7 +513,7 @@ body {
     def slugify(s: str) -> str:
         s = s.strip().lower()
         s = re.sub(r"\s+", "-", s)
-        s = re.sub(r"[^a-z0-9\-\:\.\&]", "", s)
+        s = re.sub(r"[^a-z0-9\-\:\.\&,]", "", s)
         s = re.sub(r"-+", "-", s)
         return s
 
