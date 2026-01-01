@@ -6,6 +6,13 @@
     <description></description>
     <language>en-us</language>
     <item>
+      <title>Neural Network in Factorio (MNIST)</title>
+      <link>https://brandonkirincich.com/blog/factorio_nn.html</link>
+      <description></description>
+      <pubDate>13 Jul 2025 12:00:00 GMT</pubDate>
+      <guid>https://brandonkirincich.com/blog/factorio_nn.html</guid>
+    </item>
+    <item>
       <title>JCC: Optimization And Analysis</title>
       <link>https://brandonkirincich.com/blog/jcc_p2.html</link>
       <description></description>
