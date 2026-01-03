@@ -90,7 +90,7 @@ def main():
     for dt in deduped_tags:
         with open(Path(blog_tags_out_directory / dt).with_suffix('.html'), "w", encoding="utf-8") as outfile:
             result = blog_copy
-            result += f'<svg class="tag-icon" width="18" height="18" viewBox="0 0 50 50"><path fill="white" stroke="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M47,5.5  C47,4.119,45.881,3,44.5,3c-0.156,0-14.876,0.002-14.876,0.002c-1.33,0-2.603-0.07-3.341,0.668L3.554,26.398  c-0.739,0.738-0.739,1.936,0,2.674l17.374,17.374c0.738,0.738,1.936,0.738,2.674,0L46.33,23.717c0.738-0.737,0.668-1.98,0.668-3.34  C46.998,20.377,47,5.656,47,5.5z"/><circle cx="39" cy="11" fill="#252525" r="3" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>Filter:&nbsp<a href="../../blog" class="blog-tag">&nbsp{dt} <div class="blog-tag-x">X</div>&nbsp</a>'
+            result += f'<svg class="tag-icon" width="18" height="18" viewBox="0 0 50 50"><path fill="white" stroke="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M47,5.5  C47,4.119,45.881,3,44.5,3c-0.156,0-14.876,0.002-14.876,0.002c-1.33,0-2.603-0.07-3.341,0.668L3.554,26.398  c-0.739,0.738-0.739,1.936,0,2.674l17.374,17.374c0.738,0.738,1.936,0.738,2.674,0L46.33,23.717c0.738-0.737,0.668-1.98,0.668-3.34  C46.998,20.377,47,5.656,47,5.5z"/><circle cx="39" cy="11" fill="#252525" r="3" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>&nbspFilter:&nbsp<a href="../../blog" class="blog-tag">&nbsp{dt} <div class="blog-tag-x">X</div>&nbsp</a>'
             for a in articles:
                 if dt in a['tags']:
                     tags = ''
@@ -531,7 +531,7 @@ body {
             parts = ['<ul>']
             for child in children:
                 parts.append('<li>')
-                parts.append('<a href="#' + child['id'] + '">' + child['text'] + '</a>')
+                parts.append('<a class="toc-link" href="#' + child['id'] + '">' + child['text'] + '</a>')
                 if child['children']:
                     parts.append(render_children(child['children']))
                 parts.append('</li>')

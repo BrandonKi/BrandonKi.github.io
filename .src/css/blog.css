@@ -103,6 +103,25 @@ figcaption {
     }
 }
 
+.toc-link {
+	all: revert;
+}
+
+.toc-link::after {
+	content: attr(data-text);
+	content: attr(data-text) / "";
+	height: 0;
+	visibility: hidden;
+	overflow: hidden;
+	user-select: none;
+	pointer-events: none;
+	font-weight: var(--bold);
+
+	@media speech {
+		display: none;
+	}
+}
+
 /* .blog-title {
 
 } */
