@@ -259,24 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.addEventListener('scroll', onScroll, { passive: true });
         });
     });
-/*
-    tocLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            userClicked = true;
-
-            tocLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-            scrollSidebarTo(link);
-
-            const onScroll = () => {
-                userClicked = false;
-                window.removeEventListener('scroll', onScroll);
-            };
-            window.addEventListener('scroll', onScroll);
-        });
-    });
-*/
-
 });
 
 observerCallback(
@@ -307,6 +289,7 @@ body {
     scroll-behavior: smooth;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+    overscroll-behavior: contain;
 }
 
 #toc::-webkit-scrollbar { width: 0; height: 0; }
