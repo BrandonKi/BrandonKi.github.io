@@ -231,6 +231,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (section.id) observer.observe(section);
     });
 
+    let scrollEndTimer = null;
+
+    tocLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            userClicked = true;
+
+            tocLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            scrollSidebarTo(link);
+
+            // Clear any previous timer
+            if (scrollEndTimer) {
+                clearTimeout(scrollEndTimer);
+            }
+
+            const onScroll = () => {
+                clearTimeout(scrollEndTimer);
+
+                // Re-enable observer AFTER scrolling settles
+                scrollEndTimer = setTimeout(() => {
+                    userClicked = false;
+                    window.removeEventListener('scroll', onScroll);
+                }, 150); // 100-200ms works well
+            };
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+        });
+    });
+/*
     tocLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             userClicked = true;
@@ -246,6 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.addEventListener('scroll', onScroll);
         });
     });
+*/
+
 });
 
 observerCallback(
